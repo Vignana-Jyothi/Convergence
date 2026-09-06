@@ -3,6 +3,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 
 const PAPER = "#ede1c5"
+const REGISTRATION_URL = "https://aspireup.ai/organization/convergence-vnrvjiet/event/100112"
 
 function HeroPhoto({ src, className = "" }: { src: string; className?: string }) {
   return (
@@ -70,6 +71,9 @@ function BottomBar() {
     <div className="flex items-center justify-center pt-6 pb-3 sm:pt-8">
       <Button
         size="lg"
+        onClick={() => {
+          window.location.href = REGISTRATION_URL
+        }}
         className="h-auto gap-2 bg-red-700 px-6 py-3 text-xs font-bold tracking-[0.15em] uppercase hover:bg-red-800 sm:text-sm"
         style={{ color: PAPER }}
       >
