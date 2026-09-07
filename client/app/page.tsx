@@ -81,8 +81,7 @@ const EVENT_COORDINATORS = [
 ]
 
 const CLUB_IMAGES = [
-  { src: '/clubs/club-gdgc.png', alt: 'GDGC' },
-  { src: '/clubs/club-01.png', alt: 'Club 1' },
+
   { src: '/clubs/club-02.png', alt: 'Club 2' },
   { src: '/clubs/club-03.png', alt: 'Club 3' },
   { src: '/clubs/club-04.png', alt: 'Club 4' },
@@ -120,6 +119,8 @@ const CLUB_IMAGES = [
   { src: '/clubs/club-37.png', alt: 'Club 37' },
   { src: '/clubs/club-38.png', alt: 'Club 38' },
   { src: '/clubs/club-39.png', alt: 'Club 39' },
+  { src: '/clubs/club-gdgc.png', alt: 'GDGC' },
+  { src: '/clubs/club-01.png', alt: 'Club 1' },
   { src: '/clubs/club-40.png', alt: 'Club 40' },
   { src: '/clubs/club-41.png', alt: 'Club 41' },
   { src: '/clubs/club-42.png', alt: 'Club 42' },
@@ -127,6 +128,15 @@ const CLUB_IMAGES = [
   { src: '/clubs/club-44.png', alt: 'Club 44' },
   { src: '/clubs/club-45.png', alt: 'Club 45' },
   { src: '/clubs/club-46.png', alt: 'Club 46' },
+  { src: '/clubs/club-47.png', alt: 'Club 47' },
+  { src: '/clubs/club-48.png', alt: 'Club 48' },
+  { src: '/clubs/club-49.jpeg', alt: 'Club 49' },
+  { src: '/clubs/club-50.png', alt: 'Club 50' },
+  { src: '/clubs/club-51.png', alt: 'Club 51' },
+  { src: '/clubs/club-52.png', alt: 'Club 52' },
+  { src: '/clubs/club-53.png', alt: 'Club 53' },
+  { src: '/clubs/club-54.jpeg', alt: 'Club 54' },
+  { src: '/clubs/club-55.png', alt: 'Club 55' },
 ]
 
 function ContactCard({ name, role, phone, isFaculty }: { name: string; role: string; phone: string, isFaculty?: boolean | undefined }) {
@@ -254,7 +264,7 @@ export default function Page() {
           <div className="mx-auto max-w-6xl px-6 py-20 text-center">
             <h2 className="mb-2 text-3xl font-bold">Organised By</h2>
             <p className="mx-auto mb-10 max-w-xl text-sm text-muted-foreground">
-              [Placeholder — brought to you by student clubs and technical societies working together.]
+              Convergence 2K25R is brought to you by 55 student clubs and technical societies working together to create an unforgettable experience
             </p>
             <Logos count={0} />
             <div className="mt-12 w-full" style={{ height: '400px' }}>
