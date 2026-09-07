@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { motion } from "framer-motion"
 // Adjust the import path if your apis folder is located differently relative to page.tsx
 import { eventsApi } from "@/apis/events" 
 
@@ -38,10 +39,39 @@ const THEMES = [
   "Tech for Social Good",
 ]
 
+// const FACULTY_COORDINATORS = [
+//   { name: "[Name]", role: "[Department]", phone: "[Phone number]" },
+//   { name: "[Name]", role: "[Department]", phone: "[Phone number]" },
+//   { name: "[Name]", role: "[Department]", phone: "[Phone number]" },
+// Dr. Y. Chalapathi Rao – Event Management & Coordination
+// Mrs. E. Lalitha – PR & Outreach
+// Dr. S. Sangeetha – Sponsorship & Finance
+// Dr. D. Srinivasa Rao – Sponsorship & Finance
+// Dr. Y. Chalapathi Rao – Registration & Help Desk
+// Dr. O. Sobhana – Design & Creatives
+// Dr. O. Sobhana – Social Media & Content
+// Mrs. E. Lalitha – Social Media & Content
+// Dr. D. Srinivasa Rao – Web & IT
+// Dr. S. Sangeetha – Logistics & Operations
+// Mrs. E. Lalitha – Photography & Videography
+// Dr. D. Srinivasa Rao – Hospitality & Guest Relations
+// Dr. O. Sobhana – Documentation
+// ]
+
 const FACULTY_COORDINATORS = [
-  { name: "[Name]", role: "[Department]", phone: "[Phone number]" },
-  { name: "[Name]", role: "[Department]", phone: "[Phone number]" },
-  { name: "[Name]", role: "[Department]", phone: "[Phone number]" },
+  { name: "Dr. Y. Chalapathi Rao", role: "Event Management & Coordination", phone: "[Phone number]" },
+  { name: "Mrs. E. Lalitha", role: "PR & Outreach", phone: "[Phone number]" },
+  { name: "Dr. S. Sangeetha", role: "Sponsorship & Finance", phone: "[Phone number]" },
+  { name: "Dr. D. Srinivasa Rao", role: "Sponsorship & Finance", phone: "[Phone number]" },
+  { name: "Dr. Y. Chalapathi Rao", role: "Registration & Help Desk", phone: "[Phone number]" },
+  { name: "Dr. O. Sobhana", role: "Design & Creatives", phone: "[Phone number]" },
+  { name: "Dr. O. Sobhana", role: "Social Media & Content", phone: "[Phone number]" },
+  { name: "Mrs. E. Lalitha", role: "Social Media & Content", phone: "[Phone number]" },
+  { name: "Dr. D. Srinivasa Rao", role: "Web & IT", phone: "[Phone number]" },
+  { name: "Dr. S. Sangeetha", role: "Logistics & Operations", phone: "[Phone number]" },
+  { name: "Mrs. E. Lalitha", role: "Photography & Videography", phone: "[Phone number]" },
+  { name: "Dr. D. Srinivasa Rao", role: "Hospitality & Guest Relations", phone: "[Phone number]" },
+  { name: "Dr. O. Sobhana", role: "Documentation", phone: "[Phone number]" },
 ]
 
 const EVENT_COORDINATORS = [
@@ -99,10 +129,16 @@ const CLUB_IMAGES = [
   { src: '/clubs/club-46.png', alt: 'Club 46' },
 ]
 
-function ContactCard({ name, role, phone }: { name: string; role: string; phone: string }) {
+function ContactCard({ name, role, phone, isFaculty }: { name: string; role: string; phone: string, isFaculty?: boolean | undefined }) {
   return (
     <div className="flex flex-col items-center gap-2 border border-border p-6 text-center">
-      <div className="h-14 w-14 rounded-full border border-border" />
+      <div className="w-14 h-14 rounded-full bg-black/10 flex items-center justify-center mb-4 mx-auto group-hover:bg-black/20 transition-colors duration-300">
+        <span className="text-2xl font-bold text-black">
+          {
+            isFaculty ? (name.split(" ")[1] ? name.split(" ")[1][0] + name.split(" ")[2][0] : name[0]) : (name.split(" ").length > 1 ? name.split(" ")[0][0] + name.split(" ")[1][0] : name[0])
+          }
+        </span>
+      </div>
       <p className="text-sm font-medium">{name}</p>
       <p className="text-xs text-muted-foreground">{role}</p>
       <p className="text-xs text-muted-foreground">{phone}</p>
@@ -256,7 +292,7 @@ export default function Page() {
               </p>
               <div className="grid gap-6 sm:grid-cols-3">
                 {FACULTY_COORDINATORS.map((person, i) => (
-                  <ContactCard key={i} {...person} />
+                  <ContactCard key={i} {...person} isFaculty={true} />
                 ))}
               </div>
             </div>
@@ -276,14 +312,79 @@ export default function Page() {
       </main>
 
       <footer>
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-6 py-10 text-sm text-muted-foreground">
-          <p>Follow us on social media</p>
-          <div className="flex flex-wrap justify-center gap-8">
-            <span className="border border-border px-3 py-1">Instagram</span>
-            <span className="border border-border px-3 py-1">LinkedIn</span>
-            <span className="border border-border px-3 py-1">Linktree</span>
-          </div>
-        </div>
+        <motion.div
+          className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-6 py-10 text-sm text-muted-foreground"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.8 }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
+        >
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1, duration: 0.4 }}
+          >
+            Follow us on social media
+          </motion.p>
+          <motion.div
+            className="flex flex-wrap justify-center gap-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.12, delayChildren: 0.18 } },
+            }}
+          >
+            <motion.a
+              href="https://www.instagram.com/convergence2k26_vnrvjiet/"
+              target="_blank"
+              rel="noreferrer"
+              variants={{ hidden: { opacity: 0, y: 10 },visible: { opacity: 1, y: 0 } }}
+              whileHover={{ y: -4 }}
+              whileFocus={{ y: -4 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              className="group relative outline-none"
+            >
+              <span className="block border border-border px-3 py-1 transition-colors duration-300 group-hover:border-primary group-hover:text-foreground group-focus-visible:border-primary group-focus-visible:text-foreground">
+                Instagram
+              </span>
+              <span className="absolute bottom-0 left-1/2 h-px w-0 -translate-x-1/2 bg-primary transition-all duration-300 group-hover:w-full group-focus-visible:w-full" />
+            </motion.a>
+            <motion.a
+              href="mailto:convergence@vnrvjiet.in"
+              variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+              whileHover={{ y: -4 }}
+              whileFocus={{ y: -4 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              className="group relative outline-none"
+            >
+              <span className="block border border-border px-3 py-1 transition-colors duration-300 group-hover:border-primary group-hover:text-foreground group-focus-visible:border-primary group-focus-visible:text-foreground">
+                Email
+              </span>
+              <span className="absolute bottom-0 left-1/2 h-px w-0 -translate-x-1/2 bg-primary transition-all duration-300 group-hover:w-full group-focus-visible:w-full" />
+            </motion.a>
+            <motion.a
+              href="https://www.linkedin.com/school/vnrvjiethyd/home/"
+              target="_blank"
+              rel="noreferrer"
+              variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+              whileHover={{ y: -4 }}
+              whileFocus={{ y: -4 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              className="group relative outline-none"
+            >
+              <span className="block border border-border px-3 py-1 transition-colors duration-300 group-hover:border-primary group-hover:text-foreground group-focus-visible:border-primary group-focus-visible:text-foreground">
+                LinkedIn
+              </span>
+              <span className="absolute bottom-0 left-1/2 h-px w-0 -translate-x-1/2 bg-primary transition-all duration-300 group-hover:w-full group-focus-visible:w-full" />
+            </motion.a>
+            {/* <a href="https://linktr.ee/convergence2k26">
+              <span className="border border-border px-3 py-1">Linktree</span>
+            </a> */}
+          </motion.div>
+        </motion.div>
       </footer>
     </div>
   )
