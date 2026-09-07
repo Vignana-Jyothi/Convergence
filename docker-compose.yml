@@ -24,7 +24,7 @@ services:
       - DB_NAME=postgres
       - DB_PORT=5432
     ports:
-      - "5005:5000"
+      - "15032:5000"
     depends_on:
       - db
     restart: unless-stopped
@@ -35,9 +35,9 @@ services:
       dockerfile: Dockerfile
     container_name: convergence-client
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:5005
+      - NEXT_PUBLIC_API_URL=http://localhost:15032
     ports:
-      - "3000:3000"
+      - "14032:3000"
     depends_on:
       - server
     restart: unless-stopped
