@@ -2,14 +2,14 @@ import DomeGallery from '../components/DomeGallery';
 export default function Clubs() {
   // 46 club logos - Update these paths after downloading images locally
   const clubImages = [
-    { src: '/clubs/club-gdgc.png', alt: 'GDGC' },
-    { src: '/clubs/club-01.png', alt: 'Club 1' },
+    { src: '/clubs/club-37.png', alt: 'VJ Community' },
     { src: '/clubs/club-02.png', alt: 'Club 2' },
     { src: '/clubs/club-03.png', alt: 'Club 3' },
     { src: '/clubs/club-04.png', alt: 'Club 4' },
     { src: '/clubs/club-05.png', alt: 'Club 5' },
     { src: '/clubs/club-06.png', alt: 'Club 6' },
     { src: '/clubs/club-07.png', alt: 'Club 7' },
+    { src: '/clubs/club-08.png', alt: 'Club 8' },
     { src: '/clubs/club-09.png', alt: 'Club 9' },
     { src: '/clubs/club-10.png', alt: 'Club 10' },
     { src: '/clubs/club-11.png', alt: 'Club 11' },
@@ -38,7 +38,8 @@ export default function Clubs() {
     { src: '/clubs/club-34.png', alt: 'Club 34' },
     { src: '/clubs/club-35.png', alt: 'Club 35' },
     { src: '/clubs/club-36.png', alt: 'Club 36' },
-    { src: '/clubs/club-37.png', alt: 'Club 37' },
+      { src: '/clubs/club-01.png', alt: 'Club 1' },
+    { src: '/clubs/club-gdgc.png', alt: 'GDGC' },
     { src: '/clubs/club-38.png', alt: 'Club 38' },
     { src: '/clubs/club-39.png', alt: 'Club 39' },
     { src: '/clubs/club-40.png', alt: 'Club 40' },
@@ -48,6 +49,15 @@ export default function Clubs() {
     { src: '/clubs/club-44.png', alt: 'Club 44' },
     { src: '/clubs/club-45.png', alt: 'Club 45' },
     { src: '/clubs/club-46.png', alt: 'Club 46' },
+    { src: '/clubs/club-47.jpg', alt: 'Club 47' },
+    { src: '/clubs/club-48.png', alt: 'Club 48' },
+    { src: '/clubs/club-49.jepg', alt: 'Club 49' },
+    { src: '/clubs/club-50.png', alt: 'Club 50' },
+    { src: '/clubs/club-51.png', alt: 'Club 51' },
+    { src: '/clubs/club-52.png', alt: 'Club 52' },
+    { src: '/clubs/club-53.png', alt: 'Club 53' },
+    { src: '/clubs/club-54.jpeg', alt: 'Club 54' },
+    { src: '/clubs/club-55.png', alt: 'Club 55' },
   ];
 
   return (
@@ -58,8 +68,13 @@ export default function Clubs() {
             Organised by
           </h2>
           <p className="text-gray-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-2">
-            Convergence 2K25R is brought to you by 46 student clubs and technical societies working together to create an unforgettable experience
+            Convergence 2K26R is brought to you by 46 student clubs and technical societies working together to create an unforgettable experience
           </p>
+        </div>
+
+        <div className="mb-8 flex items-center justify-center gap-6">
+          <img src="/clubs/club-gdgc.png" alt="GDGC" className="h-28 w-28 object-contain" />
+          <img src="/clubs/club-01.png" alt="Club 1" className="h-28 w-28 object-contain" />
         </div>
 
         <div className="relative w-full" style={{ height: '400px' }}>
