@@ -1,30 +1,14 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import Image from "next/image"
 import { motion } from "framer-motion"
-// Adjust the import path if your apis folder is located differently relative to page.tsx
-import { eventsApi } from "@/apis/events" 
+import { useState } from "react"
 
+import { EVENTS } from "@/data/events"
 import { Hero } from "@/components/hero"
 import { Logos } from "@/components/logos"
 import { SiteHeader } from "@/components/site-header"
 import DomeGallery from "@/components/DomeGallery"
-
-interface EventData {
-  eventId: string;
-  name: string;
-  description: string;
-  category: string;
-  registered: boolean;
-}
-
-interface EventData {
-  eventId: string;
-  name: string;
-  description: string;
-  category: string;
-  registered: boolean;
-}
 
 const EVENT_CATEGORIES = ["Technical", "Workshops", "Gaming", "Cultural", "Sports", "Hackathon"]
 
@@ -157,23 +141,8 @@ function ContactCard({ name, role, phone, isFaculty }: { name: string; role: str
 }
 
 export default function Page() {
-  const [events, setEvents] = useState<EventData[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await eventsApi.getEvents()
-        setEvents(response.events || [])
-      } catch (error) {
-        console.error("API Error (Events):", error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchEvents()
-  }, [])
+  const [selectedCategory, setSelectedCategory] = useState(EVENT_CATEGORIES[0])
+  const filteredEvents = EVENTS.filter((event) => event.category === selectedCategory)
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -192,10 +161,24 @@ export default function Page() {
                   {EVENT_CATEGORIES.map((category) => (
                     <li
                       key={category}
-                      className="flex items-center justify-between border border-border px-3 py-2"
+                      className={`border px-3 py-2 ${
+                        selectedCategory === category
+                          ? "border-foreground bg-foreground text-background"
+                          : "border-border"
+                      }`}
                     >
-                      <span>{category}</span>
-                      <span className="h-4 w-8 border border-border" />
+                      <button
+                        type="button"
+                        onClick={() => setSelectedCategory(category)}
+                        className="flex w-full items-center justify-between text-left"
+                      >
+                        <span>{category}</span>
+                        <span
+                          className={`h-4 w-8 border ${
+                            selectedCategory === category ? "border-background" : "border-border"
+                          }`}
+                        />
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -204,38 +187,39 @@ export default function Page() {
                 <p className="mb-4 text-xs uppercase tracking-widest text-muted-foreground">
                   Selected Category Events
                 </p>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {isLoading ? (
-                    /* Keep existing skeleton for loading state */
-                    Array.from({ length: 4 }).map((_, i) => (
-                      <div key={i} className="space-y-2 border border-border p-4">
-                        <div className="h-3 w-2/3 bg-muted" />
-                        <div className="h-2 w-full bg-muted" />
-                        <div className="h-2 w-1/2 bg-muted" />
-                      </div>
-                    ))
-                  ) : events.length > 0 ? (
-                    /* Map actual events */
-                    events.map((event) => (
-                      <div key={event.eventId} className="flex flex-col space-y-2 border border-border p-4">
-                        <h3 className="font-bold text-lg">{event.name}</h3>
-                        <p className="text-sm text-muted-foreground line-clamp-2">{event.description}</p>
-                        <div className="mt-auto flex items-center justify-between pt-4">
-                          <span className="text-xs uppercase tracking-widest text-muted-foreground border border-border px-2 py-1">
+                {filteredEvents.length > 0 ? (
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {filteredEvents.map((event) => (
+                      <div key={event.id} className="flex flex-col border border-border p-4">
+                        <div className="relative aspect-video border-b border-border">
+                          <Image
+                            src={event.posterUrl}
+                            alt={event.name}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 640px) 100vw, 33vw"
+                          />
+                        </div>
+                        <div className="flex flex-1 flex-col gap-3 pt-4">
+                          <span className="w-fit border border-border px-2 py-1 text-xs uppercase tracking-widest text-muted-foreground">
                             {event.category}
                           </span>
-                          {event.registered && (
-                            <span className="text-xs font-semibold uppercase text-green-500">
-                              Registered
-                            </span>
-                          )}
+                          <h3 className="text-lg font-bold">{event.name}</h3>
+                          <a
+                            href={event.regLink}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="mt-auto w-fit border border-border px-3 py-2 text-sm transition-colors hover:border-primary hover:text-primary"
+                          >
+                            Register on Aspireup
+                          </a>
                         </div>
                       </div>
-                    ))
-                  ) : (
-                    <p className="text-sm text-muted-foreground col-span-2">No events found.</p>
-                  )}
-                </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">No events in this category yet</p>
+                )}
               </div>
             </div>
           </div>
