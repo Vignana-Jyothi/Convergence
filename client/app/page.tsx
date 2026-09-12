@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
 
 import { EVENTS } from "@/data/events"
@@ -10,7 +10,7 @@ import { Logos } from "@/components/logos"
 import { SiteHeader } from "@/components/site-header"
 import DomeGallery from "@/components/DomeGallery"
 
-const EVENT_CATEGORIES = ["Technical", "Workshops", "Gaming", "Cultural", "Sports", "Hackathon"]
+const EVENT_CATEGORIES = ["All", "Technical", "Workshops", "Gaming", "Cultural", "Sports", "Hackathon"]
 
 const THEMES = [
   "Robotics & Automation",
@@ -43,26 +43,26 @@ const THEMES = [
 // ]
 
 const FACULTY_COORDINATORS = [
-  { name: "Dr. Y. Chalapathi Rao", role: "Event Management & Coordination", phone: "[Phone number]" },
-  { name: "Mrs. E. Lalitha", role: "PR & Outreach", phone: "[Phone number]" },
-  { name: "Dr. S. Sangeetha", role: "Sponsorship & Finance", phone: "[Phone number]" },
-  { name: "Dr. D. Srinivasa Rao", role: "Sponsorship & Finance", phone: "[Phone number]" },
-  { name: "Dr. Y. Chalapathi Rao", role: "Registration & Help Desk", phone: "[Phone number]" },
-  { name: "Dr. O. Sobhana", role: "Design & Creatives", phone: "[Phone number]" },
-  { name: "Dr. O. Sobhana", role: "Social Media & Content", phone: "[Phone number]" },
-  { name: "Mrs. E. Lalitha", role: "Social Media & Content", phone: "[Phone number]" },
-  { name: "Dr. D. Srinivasa Rao", role: "Web & IT", phone: "[Phone number]" },
-  { name: "Dr. S. Sangeetha", role: "Logistics & Operations", phone: "[Phone number]" },
-  { name: "Mrs. E. Lalitha", role: "Photography & Videography", phone: "[Phone number]" },
-  { name: "Dr. D. Srinivasa Rao", role: "Hospitality & Guest Relations", phone: "[Phone number]" },
-  { name: "Dr. O. Sobhana", role: "Documentation", phone: "[Phone number]" },
+  { name: "Dr. D. Srinivasa Rao", role: ["Sponsorship & Finance", "Web & IT", "Hospitality & Guest Relations"], phone: "+91 9966232722" },
+  { name: "Dr. Y. Chalapathi Rao", role: ["Event Management & Coordination", "Registration & Help Desk"], phone: "+91 9491127967" },
+  { name: "Mrs. E. Lalitha", role: ["PR & Outreach", "Social Media & Content", "Photography & Videography"], phone: "+91 9014355042" },
+  { name: "Dr. S. Sangeetha", role: ["Sponsorship & Finance", "Logistics & Operations"], phone: "+91 9849575415" },
+  { name: "Dr. O. Sobhana", role: ["Design & Creatives", "Social Media & Content", "Documentation"], phone: "+91 9441169927" },
 ]
 
 const EVENT_COORDINATORS = [
-  { name: "[Name]", role: "[Event Coordinator]", phone: "[Phone number]" },
-  { name: "[Name]", role: "[Event Coordinator]", phone: "[Phone number]" },
-  { name: "[Name]", role: "[Event Coordinator]", phone: "[Phone number]" },
+  { name: "Srikar Burgula", role: ["Events Coordinator"], phone: "+91 8328292124" },
+  { name: "P Maheshwar", role: ["Web & IT Coordinator"], phone: "+91 9515871625" },
+  { name: "E. V. Gaurav", role: ["Registrations & Help Desk Coordinator"], phone: "+91 8179590621" },
 ]
+
+// const FACULTY_COORDINATORS = [
+//   { name: "Dr. Y. Chalapathi Rao", phone: "+91 9491127967" },
+//   { name: "Mrs. E. Lalitha", phone: "+91 9014355042" },
+//   { name: "Dr. S. Sangeetha", phone: "+91 9849575415" },
+//   { name: "Dr. D. Srinivasa Rao", phone: "+91 9966232722" },
+//   { name: "Dr. O. Sobhana", phone: "+91 9441169927" },
+// ]
 
 const CLUB_IMAGES = [
 
@@ -123,7 +123,7 @@ const CLUB_IMAGES = [
   { src: '/clubs/club-55.png', alt: 'Club 55' },
 ]
 
-function ContactCard({ name, role, phone, isFaculty }: { name: string; role: string; phone: string, isFaculty?: boolean | undefined }) {
+function ContactCard({ name, role, phone, isFaculty }: { name: string; role?: string[]; phone: string, isFaculty?: boolean | undefined }) {
   return (
     <div className="flex flex-col items-center gap-2 border border-border p-6 text-center">
       <div className="w-14 h-14 rounded-full bg-black/10 flex items-center justify-center mb-4 mx-auto group-hover:bg-black/20 transition-colors duration-300">
@@ -134,7 +134,13 @@ function ContactCard({ name, role, phone, isFaculty }: { name: string; role: str
         </span>
       </div>
       <p className="text-sm font-medium">{name}</p>
-      <p className="text-xs text-muted-foreground">{role}</p>
+      <div className="text-xs text-muted-foreground">{
+        role?.map((r, i) => (
+          <p key={i}>
+            {r}
+          </p>
+        ))
+      }</div>
       <p className="text-xs text-muted-foreground">{phone}</p>
     </div>
   )
@@ -142,7 +148,10 @@ function ContactCard({ name, role, phone, isFaculty }: { name: string; role: str
 
 export default function Page() {
   const [selectedCategory, setSelectedCategory] = useState(EVENT_CATEGORIES[0])
-  const filteredEvents = EVENTS.filter((event) => event.category === selectedCategory)
+  const [isCreditHovered, setIsCreditHovered] = useState(false)
+  const [isCreditPinned, setIsCreditPinned] = useState(false)
+  const filteredEvents = EVENTS.filter((event) => event.category === selectedCategory || selectedCategory === "All")
+  const isCreditOpen = isCreditHovered || isCreditPinned
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -155,7 +164,7 @@ export default function Page() {
           <div className="mx-auto max-w-6xl px-6 py-20">
             <h2 className="mb-8 text-center text-3xl font-bold">Events</h2>
             <div className="flex flex-col border border-border md:flex-row">
-              <div className="border-b border-border p-6 md:w-1/3 md:border-b-0 md:border-r">
+              <div className="border-b border-border p-6 md:sticky md:top-20 md:w-1/3 md:self-start md:border-b-0 md:border-r">
                 <p className="mb-4 text-xs uppercase tracking-widest text-muted-foreground">Categories</p>
                 <ul className="space-y-3 text-sm">
                   {EVENT_CATEGORIES.map((category) => (
@@ -282,7 +291,7 @@ export default function Page() {
             <div>
               <h2 className="mb-2 text-center text-3xl font-bold">Faculty Coordinators</h2>
               <p className="mb-8 text-center text-sm text-muted-foreground">
-                [Placeholder — meet our dedicated faculty coordinators.]
+                Meet our dedicated faculty coordinators.
               </p>
               <div className="grid gap-6 sm:grid-cols-3">
                 {FACULTY_COORDINATORS.map((person, i) => (
@@ -293,7 +302,7 @@ export default function Page() {
             <div>
               <h2 className="mb-2 text-center text-3xl font-bold">Contact Us</h2>
               <p className="mb-8 text-center text-sm text-muted-foreground">
-                [Placeholder — get in touch with our team for any inquiries.]
+                Get in touch with our team for any inquiries.
               </p>
               <div className="grid gap-6 sm:grid-cols-3">
                 {EVENT_COORDINATORS.map((person, i) => (
@@ -380,6 +389,43 @@ export default function Page() {
           </motion.div>
         </motion.div>
       </footer>
+
+      <div
+        className="fixed bottom-5 right-5 z-50 sm:bottom-7 sm:right-7"
+        onMouseEnter={() => setIsCreditHovered(true)}
+        onMouseLeave={() => setIsCreditHovered(false)}
+      >
+        <AnimatePresence>
+          {isCreditOpen && (
+            <motion.div
+              initial={{ opacity: 0, x: 16, scale: 0.92 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: 16, scale: 0.92 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="absolute bottom-1 right-16 w-max max-w-[calc(100vw-7rem)] border border-border bg-background px-4 py-3 text-xs font-medium shadow-lg"
+            >
+              Developed by GDGC Web Dev Volunteers
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <motion.button
+          type="button"
+          aria-label="Show development credit"
+          aria-expanded={isCreditOpen}
+          onClick={() => setIsCreditPinned((isPinned) => !isPinned)}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.94 }}
+          className="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border-2 border-foreground bg-black shadow-lg outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-primary"
+        >
+          <Image
+            src="/clubs/club-gdgc2.png"
+            alt="GDGC logo"
+            fill
+            sizes="256px"
+            className="scale-250 object-contain"
+          />
+        </motion.button>
+      </div>
     </div>
   )
 }
