@@ -740,7 +740,7 @@ export default function Page() {
                   [✕]
                 </button>
               </div>
-              <p className="font-bold text-foreground">Developed by GDGC Web Dev Volunteers</p>
+              <p className="font-bold text-foreground">Developed by GDGC Web Dev Team</p>
               <p className="mt-0.5 text-[10px] text-muted-foreground">Google Developer Groups on Campus • VNRVJIET</p>
             </motion.div>
           )}
