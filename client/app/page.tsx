@@ -3,7 +3,8 @@
 import Image from "next/image"
 import dynamic from "next/dynamic"
 import { AnimatePresence, motion } from "framer-motion"
-import { useState } from "react"
+import { Search, X } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
 
 import { EVENTS } from "@/data/events"
 import { Hero } from "@/components/hero"
@@ -232,40 +233,39 @@ function EventSearch({
   onClear: () => void
 }) {
   return (
-    <div className="mx-auto mb-10 max-w-lg">
-      <div className="relative border-2 border-foreground/30 bg-background p-1.5 retro-shadow-sm transition-all focus-within:border-foreground focus-within:retro-shadow">
-        {/* Terminal prompt bar */}
-        <div className="mb-1 flex items-center justify-between border-b border-border/80 px-2 py-1 font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
-          <span className="flex items-center gap-1.5">
-            <span className="inline-block h-2 w-2 bg-red-700" />
-            <span>SYS_QUERY // EVENT_DATABASE</span>
-          </span>
-          <span className="font-bold text-red-700">VNRVJIET.2K26</span>
+    <div className="mx-auto mb-10 max-w-xl">
+      <div className="relative flex items-center border-2 border-foreground/35 bg-background/95 retro-shadow-sm transition-all focus-within:border-foreground focus-within:retro-shadow">
+        {/* Search Icon */}
+        <div className="flex items-center justify-center pl-3.5 pr-1 text-foreground/60">
+          <Search className="h-4 w-4" />
         </div>
 
-        <div className="relative flex items-center">
-          <span className="pl-2 pr-1 font-mono text-sm font-bold text-red-700">❯</span>
-          <input
-            type="text"
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            placeholder="Search events by name or category..."
-            suppressHydrationWarning
-            className="w-full bg-transparent py-2 pl-1 pr-14 font-mono text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
-          />
+        {/* Input */}
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="Search events by name or category..."
+          suppressHydrationWarning
+          className="w-full bg-transparent py-3 pl-2 pr-14 font-mono text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+        />
+
+        {/* Action Button / Badge */}
+        <div className="absolute right-2.5 flex items-center">
           {value ? (
             <button
               type="button"
               onClick={onClear}
               suppressHydrationWarning
-              className="absolute right-2 border border-border px-1.5 py-0.5 font-mono text-[11px] font-bold text-muted-foreground transition-colors hover:border-foreground hover:bg-foreground hover:text-background"
+              className="retro-btn flex items-center gap-1 border border-foreground/70 bg-background px-2 py-1 font-mono text-[11px] font-bold text-foreground hover:bg-foreground hover:text-background"
               aria-label="Clear search"
             >
-              [ESC]
+              <span>CLEAR</span>
+              <X className="h-3 w-3" />
             </button>
           ) : (
-            <span className="animate-blink pointer-events-none absolute right-3 font-mono text-sm font-bold text-red-700">
-              _
+            <span className="hidden border border-border/80 bg-foreground/5 px-2 py-0.5 font-mono text-[10px] font-bold tracking-wider text-muted-foreground sm:inline-block">
+              SEARCH
             </span>
           )}
         </div>
@@ -279,26 +279,48 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState("")
   const [isCreditHovered, setIsCreditHovered] = useState(false)
   const [isCreditPinned, setIsCreditPinned] = useState(false)
+  const creditRef = useRef<HTMLDivElement>(null)
+
+  const isCreditOpen = isCreditHovered || isCreditPinned
+
+  const toggleCredit = () => {
+    if (isCreditOpen) {
+      setIsCreditPinned(false)
+      setIsCreditHovered(false)
+    } else {
+      setIsCreditPinned(true)
+    }
+  }
+
+  useEffect(() => {
+    if (!isCreditOpen) return
+    const handleOutsidePointer = (e: PointerEvent) => {
+      if (creditRef.current && !creditRef.current.contains(e.target as Node)) {
+        setIsCreditPinned(false)
+        setIsCreditHovered(false)
+      }
+    }
+    document.addEventListener("pointerdown", handleOutsidePointer)
+    return () => document.removeEventListener("pointerdown", handleOutsidePointer)
+  }, [isCreditOpen])
 
   const isSearching = searchQuery.trim().length > 0
   const filteredEvents = isSearching
     ? EVENTS.filter((event) => {
-        const query = searchQuery.trim().toLowerCase()
-        return (
-          event.name.toLowerCase().includes(query) ||
-          event.category.toLowerCase().includes(query)
-        )
-      })
-    : EVENTS.filter(
-        (event) => event.category === selectedCategory || selectedCategory === "All"
+      const query = searchQuery.trim().toLowerCase()
+      return (
+        event.name.toLowerCase().includes(query) ||
+        event.category.toLowerCase().includes(query)
       )
+    })
+    : EVENTS.filter(
+      (event) => event.category === selectedCategory || selectedCategory === "All"
+    )
 
   const categoryCounts = EVENT_CATEGORIES.reduce((acc, cat) => {
     acc[cat] = cat === "All" ? EVENTS.length : EVENTS.filter((e) => e.category === cat).length
     return acc
   }, {} as Record<string, number>)
-
-  const isCreditOpen = isCreditHovered || isCreditPinned
 
   return (
     <div className="relative min-h-screen bg-background text-foreground retro-grid-bg selection:bg-red-700 selection:text-[#ede1c5]">
@@ -350,24 +372,21 @@ export default function Page() {
                             setSelectedCategory(category)
                             setSearchQuery("")
                           }}
-                          className={`group flex w-full items-center justify-between border-2 px-3 py-2.5 text-left transition-all ${
-                            isSelected
-                              ? "border-foreground bg-foreground text-background retro-shadow-sm"
-                              : "border-border/80 bg-background/70 text-foreground hover:border-foreground/60 hover:bg-foreground/5"
-                          }`}
+                          className={`group flex w-full items-center justify-between border-2 px-3 py-2.5 text-left transition-all ${isSelected
+                            ? "border-foreground bg-foreground text-background retro-shadow-sm"
+                            : "border-border/80 bg-background/70 text-foreground hover:border-foreground/60 hover:bg-foreground/5"
+                            }`}
                         >
                           <span className="flex items-center gap-2">
                             <span
-                              className={`inline-block h-1.5 w-1.5 ${
-                                isSelected ? "bg-red-500" : "bg-muted-foreground/40 group-hover:bg-red-700"
-                              }`}
+                              className={`inline-block h-1.5 w-1.5 ${isSelected ? "bg-red-500" : "bg-muted-foreground/40 group-hover:bg-red-700"
+                                }`}
                             />
                             <span className="font-bold tracking-wider uppercase">{category}</span>
                           </span>
                           <span
-                            className={`font-mono text-[11px] ${
-                              isSelected ? "font-bold text-red-400" : "text-muted-foreground"
-                            }`}
+                            className={`font-mono text-[11px] ${isSelected ? "font-bold text-red-400" : "text-muted-foreground"
+                              }`}
                           >
                             [{String(count).padStart(2, "0")}]
                           </span>
@@ -681,9 +700,18 @@ export default function Page() {
 
       {/* FLOATING GDGC VOLUNTEER BADGE */}
       <div
+        ref={creditRef}
         className="fixed bottom-5 right-5 z-50 sm:bottom-7 sm:right-7"
-        onMouseEnter={() => setIsCreditHovered(true)}
-        onMouseLeave={() => setIsCreditHovered(false)}
+        onMouseEnter={() => {
+          if (typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches) {
+            setIsCreditHovered(true)
+          }
+        }}
+        onMouseLeave={() => {
+          if (typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches) {
+            setIsCreditHovered(false)
+          }
+        }}
       >
         <AnimatePresence>
           {isCreditOpen && (
@@ -694,9 +722,23 @@ export default function Page() {
               transition={{ duration: 0.2, ease: "easeOut" }}
               className="absolute bottom-1 right-16 w-max max-w-[calc(100vw-7rem)] border-2 border-foreground bg-background p-3 font-mono text-xs retro-shadow"
             >
-              <div className="mb-1.5 flex items-center gap-1.5 border-b border-border pb-1 font-mono text-[10px] font-bold text-red-700 tracking-wider uppercase">
-                <span className="h-1.5 w-1.5 bg-red-700" />
-                <span>DEV_TERMINAL // CREDITS</span>
+              <div className="mb-1.5 flex items-center justify-between border-b border-border pb-1 font-mono text-[10px] font-bold text-red-700 tracking-wider uppercase">
+                <div className="flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 bg-red-700" />
+                  <span>DEV_TERMINAL // CREDITS</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setIsCreditPinned(false)
+                    setIsCreditHovered(false)
+                  }}
+                  aria-label="Close credits"
+                  className="ml-2 text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  [✕]
+                </button>
               </div>
               <p className="font-bold text-foreground">Developed by GDGC Web Dev Volunteers</p>
               <p className="mt-0.5 text-[10px] text-muted-foreground">Google Developer Groups on Campus • VNRVJIET</p>
@@ -705,21 +747,21 @@ export default function Page() {
         </AnimatePresence>
         <motion.button
           type="button"
-          aria-label="Show development credit"
+          aria-label="Toggle development credit"
           aria-expanded={isCreditOpen}
           suppressHydrationWarning
-          onClick={() => setIsCreditPinned((isPinned) => !isPinned)}
+          onClick={toggleCredit}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="retro-btn relative flex h-13 w-13 items-center justify-center overflow-hidden rounded-md border-2 border-foreground bg-[#171412] p-1.5 shadow-md outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-primary"
         >
-          <div className="relative h-full w-full">
+          <div className="relative h-[160px] w-[160px] overflow-hidden">
             <Image
               src="/clubs/club-gdgc2.png"
               alt="GDGC logo"
               fill
-              sizes="64px"
-              className="object-contain"
+              sizes="128px"
+              className="object-cover object-center"
             />
           </div>
           <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-emerald-500 ring-1 ring-black" title="System Dev Status" />
