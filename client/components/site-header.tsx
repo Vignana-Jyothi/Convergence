@@ -1,8 +1,7 @@
 "use client"
 
-import { MobileNav } from "@/components/mobile-nav"
+import PillNav from "@/components/PillNav"
 import { useActiveSection } from "@/hooks/use-active-section"
-import { cn } from "@/lib/utils"
 
 const NAV_ITEMS = [
   { label: "Home", href: "#home" },
@@ -17,8 +16,8 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-black/20 bg-red-700">
-      <div className="relative mx-auto flex h-20 w-full max-w-[1332px] items-center justify-between">
-        <a href="#home" className="flex items-center">
+      <div className="relative mx-auto flex h-16 w-full max-w-[1332px] items-center justify-between px-3 md:h-20 md:px-0">
+        <a href="#home" className="mr-3 flex shrink-0 items-center md:mr-0">
           <span
             className="h-8 w-8 shrink-0 bg-[#ede1c5]"
             style={{
@@ -35,32 +34,18 @@ export function SiteHeader() {
           />
         </a>
 
-        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 font-tagline text-sm font-black! tracking-[0.2em] text-[#ede1c5] lowercase md:flex">
-          {NAV_ITEMS.map((item) => {
-            const isActive = activeHref === item.href
-            return (
-              <a
-                key={item.href}
-                href={item.href}
-                aria-current={isActive ? "true" : undefined}
-                className={cn(
-                  "relative pb-1 transition-opacity",
-                  isActive ? "opacity-100" : "opacity-70 hover:opacity-100"
-                )}
-              >
-                {item.label}
-                <span
-                  className={cn(
-                    "absolute inset-x-0 -bottom-px h-px bg-[#ede1c5] transition-opacity",
-                    isActive ? "opacity-100" : "opacity-0"
-                  )}
-                />
-              </a>
-            )
-          })}
-        </nav>
-
-        <MobileNav items={NAV_ITEMS} activeHref={activeHref} />
+        <div className="flex-1 overflow-hidden md:absolute md:left-1/2 md:flex-initial md:-translate-x-1/2">
+          <PillNav
+            items={NAV_ITEMS}
+            activeHref={activeHref}
+            baseColor="#ede1c5"
+            pillColor="rgba(237, 225, 197, 0.16)"
+            pillTextColor="#ede1c5"
+            hoveredPillTextColor="#b91c1c"
+            trackBg="transparent"
+            className="font-tagline lowercase"
+          />
+        </div>
       </div>
     </header>
   )

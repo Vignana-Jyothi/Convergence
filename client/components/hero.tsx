@@ -1,6 +1,9 @@
+"use client"
+
 import Image from "next/image"
 
 import { Button } from "@/components/ui/button"
+import SplitFlapText from "@/components/SplitFlapText"
 
 const PAPER = "#ede1c5"
 const REGISTRATION_URL = "https://aspireup.ai/organization/convergence-vnrvjiet/event/100112"
@@ -19,7 +22,10 @@ function TitleRow() {
       <div className="w-full">
         <div className="flex justify-center">
           <div className="relative flex flex-col items-center md:block">
-            <h1 className="flex items-center gap-1 font-hero-title text-[clamp(1.35rem,8.5vw,5.5rem)] leading-none tracking-tight text-black uppercase sm:gap-2">
+            <h1
+              suppressHydrationWarning
+              className="flex items-center gap-1 font-hero-title text-[clamp(1.35rem,8.5vw,5.5rem)] leading-none tracking-tight text-black uppercase sm:gap-2"
+            >
               <span>C</span>
 
               <span className="relative -mx-0.5 inline-block h-[0.8em] w-[0.8em] sm:-mx-1">
@@ -32,7 +38,20 @@ function TitleRow() {
                 />
               </span>
 
-              <span>NVERGENCE</span>
+              <SplitFlapText
+                words={["NVERGENCE", "18-19 SEP"]}
+                padTo={9}
+                fontSize="1em"
+                gap="0.02em"
+                tileRadius={0}
+                tileColor={PAPER}
+                textColor="#000000"
+                charset="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-"
+                flipDuration={0.12}
+                stagger={0.05}
+                cycleDelay={2600}
+                className="font-hero-title text-black"
+              />
             </h1>
 
             <span

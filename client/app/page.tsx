@@ -1,15 +1,20 @@
 "use client"
 
 import Image from "next/image"
+import dynamic from "next/dynamic"
 import { AnimatePresence, motion } from "framer-motion"
-import { Search, X } from "lucide-react"
 import { useState } from "react"
 
 import { EVENTS } from "@/data/events"
 import { Hero } from "@/components/hero"
-import { Logos } from "@/components/logos"
 import { SiteHeader } from "@/components/site-header"
-import DomeGallery from "@/components/DomeGallery"
+
+const DomeGallery = dynamic(() => import("@/components/DomeGallery"), {
+  ssr: false,
+})
+const CircularGallery = dynamic(() => import("@/components/CircularGallery"), {
+  ssr: false,
+})
 
 const EVENT_CATEGORIES = ["All", "Technical", "Workshops", "Gaming", "Cultural", "Sports", "Hackathon"]
 
@@ -23,6 +28,11 @@ const THEMES = [
   "Smart Living",
   "Tech for Social Good",
 ]
+
+const THEME_ITEMS = THEMES.map((theme, index) => ({
+  image: `https://picsum.photos/seed/theme-${index + 1}/800/600?grayscale`,
+  text: theme,
+}))
 
 // const FACULTY_COORDINATORS = [
 //   { name: "[Name]", role: "[Department]", phone: "[Phone number]" },
@@ -124,25 +134,90 @@ const CLUB_IMAGES = [
   { src: '/clubs/club-55.png', alt: 'Club 55' },
 ]
 
-function ContactCard({ name, role, phone, isFaculty }: { name: string; role?: string[]; phone: string, isFaculty?: boolean | undefined }) {
+function ContactCard({
+  name,
+  role,
+  phone,
+  isFaculty,
+}: {
+  name: string
+  role?: string[]
+  phone: string
+  isFaculty?: boolean
+}) {
+  const parts = name.split(" ")
+  const initials = isFaculty
+    ? parts[1]
+      ? parts[1][0] + (parts[2] ? parts[2][0] : parts[1][1] || "")
+      : name[0]
+    : parts.length > 1
+      ? parts[0][0] + parts[1][0]
+      : name[0]
+
+  const passId = `${isFaculty ? "FAC" : "COORD"}-${name.replace(/[^A-Za-z]/g, "").slice(0, 4).toUpperCase()}`
+
   return (
-    <div className="flex flex-col items-center gap-2 border border-border p-6 text-center">
-      <div className="w-14 h-14 rounded-full bg-black/10 flex items-center justify-center mb-4 mx-auto group-hover:bg-black/20 transition-colors duration-300">
-        <span className="text-2xl font-bold text-black">
-          {
-            isFaculty ? (name.split(" ")[1] ? name.split(" ")[1][0] + name.split(" ")[2][0] : name[0]) : (name.split(" ").length > 1 ? name.split(" ")[0][0] + name.split(" ")[1][0] : name[0])
-          }
+    <div className="group relative flex flex-col items-center border-2 border-foreground/20 bg-background/95 p-5 text-center retro-shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-foreground/60 hover:retro-shadow">
+      {/* Top lanyard hole / header accent */}
+      <div className="mb-3 flex w-full items-center justify-between border-b border-border/80 pb-2.5">
+        <span className="font-mono text-[9px] font-bold tracking-widest text-muted-foreground uppercase">
+          {isFaculty ? "FACULTY DESK" : "STUDENT OPERATIONS"}
+        </span>
+        <div className="h-1.5 w-7 rounded-full bg-foreground/20 ring-1 ring-border" title="Lanyard clip slot" />
+        <span className="font-mono text-[9px] font-bold text-red-700 tracking-wider">
+          {passId}
         </span>
       </div>
-      <p className="text-sm font-medium">{name}</p>
-      <div className="text-xs text-muted-foreground">{
-        role?.map((r, i) => (
-          <p key={i}>
+
+      {/* ID Photo box */}
+      <div className="relative mb-3 flex h-16 w-16 items-center justify-center border-2 border-foreground/30 bg-[#ddd0aa]/80 shadow-inner">
+        <span className="font-mono text-xl font-black tracking-tight text-foreground">
+          {initials}
+        </span>
+        <span className="pointer-events-none absolute -bottom-1 -right-1 bg-red-700 px-1 py-0.2 font-mono text-[8px] font-bold text-[#ede1c5]">
+          {isFaculty ? "FAC" : "LEAD"}
+        </span>
+      </div>
+
+      <p className="text-sm font-bold tracking-tight text-foreground">{name}</p>
+
+      {/* Role tag chips */}
+      <div className="my-2.5 flex min-h-[44px] flex-wrap justify-center gap-1.5">
+        {role?.map((r, i) => (
+          <span
+            key={i}
+            className="inline-block border border-border bg-[#e2d5b0]/60 px-2 py-0.5 font-mono text-[10px] font-medium tracking-wide text-foreground/90"
+          >
             {r}
-          </p>
-        ))
-      }</div>
-      <p className="text-xs text-muted-foreground">{phone}</p>
+          </span>
+        ))}
+      </div>
+
+      {/* Telephone link */}
+      <div className="mt-auto w-full border-t border-dashed border-border/80 pt-2.5">
+        <a
+          href={`tel:${phone.replace(/\s+/g, "")}`}
+          className="inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground transition-colors hover:text-red-700"
+        >
+          <span aria-hidden className="font-bold text-red-700">☎</span>
+          <span className="tracking-wider">{phone}</span>
+        </a>
+      </div>
+
+      {/* Retro barcode lines at bottom */}
+      <div className="mt-3 flex h-2.5 w-full items-center justify-center gap-[2px] opacity-40 transition-opacity group-hover:opacity-75">
+        <span className="h-full w-1 bg-foreground" />
+        <span className="h-full w-[2px] bg-foreground" />
+        <span className="h-full w-[1px] bg-foreground" />
+        <span className="h-full w-[3px] bg-foreground" />
+        <span className="h-full w-[1px] bg-foreground" />
+        <span className="h-full w-[2px] bg-foreground" />
+        <span className="h-full w-1 bg-foreground" />
+        <span className="h-full w-[1px] bg-foreground" />
+        <span className="h-full w-[3px] bg-foreground" />
+        <span className="h-full w-[2px] bg-foreground" />
+        <span className="h-full w-1 bg-foreground" />
+      </div>
     </div>
   )
 }
@@ -157,26 +232,43 @@ function EventSearch({
   onClear: () => void
 }) {
   return (
-    <div className="mx-auto mb-8 max-w-md">
-      <div className="relative">
-        <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <input
-          type="text"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="Search events by name or category..."
-          className="w-full border border-border bg-background py-2.5 pl-10 pr-9 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:border-foreground focus:outline-none"
-        />
-        {value && (
-          <button
-            type="button"
-            onClick={onClear}
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-muted-foreground transition-colors hover:text-foreground"
-            aria-label="Clear search"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        )}
+    <div className="mx-auto mb-10 max-w-lg">
+      <div className="relative border-2 border-foreground/30 bg-background p-1.5 retro-shadow-sm transition-all focus-within:border-foreground focus-within:retro-shadow">
+        {/* Terminal prompt bar */}
+        <div className="mb-1 flex items-center justify-between border-b border-border/80 px-2 py-1 font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block h-2 w-2 bg-red-700" />
+            <span>SYS_QUERY // EVENT_DATABASE</span>
+          </span>
+          <span className="font-bold text-red-700">VNRVJIET.2K26</span>
+        </div>
+
+        <div className="relative flex items-center">
+          <span className="pl-2 pr-1 font-mono text-sm font-bold text-red-700">❯</span>
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder="Search events by name or category..."
+            suppressHydrationWarning
+            className="w-full bg-transparent py-2 pl-1 pr-14 font-mono text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
+          />
+          {value ? (
+            <button
+              type="button"
+              onClick={onClear}
+              suppressHydrationWarning
+              className="absolute right-2 border border-border px-1.5 py-0.5 font-mono text-[11px] font-bold text-muted-foreground transition-colors hover:border-foreground hover:bg-foreground hover:text-background"
+              aria-label="Clear search"
+            >
+              [ESC]
+            </button>
+          ) : (
+            <span className="animate-blink pointer-events-none absolute right-3 font-mono text-sm font-bold text-red-700">
+              _
+            </span>
+          )}
+        </div>
       </div>
     </div>
   )
@@ -201,18 +293,32 @@ export default function Page() {
         (event) => event.category === selectedCategory || selectedCategory === "All"
       )
 
+  const categoryCounts = EVENT_CATEGORIES.reduce((acc, cat) => {
+    acc[cat] = cat === "All" ? EVENTS.length : EVENTS.filter((e) => e.category === cat).length
+    return acc
+  }, {} as Record<string, number>)
+
   const isCreditOpen = isCreditHovered || isCreditPinned
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="relative min-h-screen bg-background text-foreground retro-grid-bg selection:bg-red-700 selection:text-[#ede1c5]">
       <SiteHeader />
 
       <main>
         <Hero />
 
-        <section id="events" className="border-b border-border">
-          <div className="mx-auto max-w-6xl px-6 py-20">
-            <h2 className="mb-8 text-center text-3xl font-bold">Events</h2>
+        {/* EVENTS SECTION */}
+        <section id="events" className="relative border-b-2 border-foreground/15 py-20">
+          <div className="mx-auto max-w-6xl px-6">
+            <div className="mb-2 flex items-center justify-center gap-2 font-mono text-xs font-bold tracking-widest text-red-700 uppercase">
+              <span>[ ARCHIVE // EVENT DIRECTORY ]</span>
+            </div>
+            <h2 className="mb-2 text-center text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              Events
+            </h2>
+            <p className="mx-auto mb-8 max-w-lg text-center font-mono text-xs text-muted-foreground">
+              Filter by category or search through 40+ competitions, workshops, and flagship challenges.
+            </p>
 
             <EventSearch
               value={searchQuery}
@@ -220,99 +326,147 @@ export default function Page() {
               onClear={() => setSearchQuery("")}
             />
 
-            <div className="flex flex-col border border-border md:flex-row">
-              <div className="border-b border-border p-6 md:sticky md:top-20 md:w-1/3 md:self-start md:border-b-0 md:border-r">
-                <p className="mb-4 text-xs uppercase tracking-widest text-muted-foreground">Categories</p>
-                <ul className="space-y-3 text-sm">
-                  {EVENT_CATEGORIES.map((category) => (
-                    <li
-                      key={category}
-                      className={`border px-3 py-2 ${
-                        selectedCategory === category
-                          ? "border-foreground bg-foreground text-background"
-                          : "border-border"
-                      }`}
-                    >
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setSelectedCategory(category)
-                          setSearchQuery("")
-                        }}
-                        className="flex w-full items-center justify-between text-left"
-                      >
-                        <span>{category}</span>
-                        <span
-                          className={`h-4 w-8 border ${
-                            selectedCategory === category ? "border-background" : "border-border"
+            <div className="flex flex-col border-2 border-foreground/20 bg-background/90 md:flex-row retro-shadow">
+              {/* CATEGORY SIDEBAR */}
+              <div className="border-b-2 border-foreground/20 p-6 md:sticky md:top-20 md:w-1/3 md:self-start md:border-b-0 md:border-r-2 bg-[#e8dbbc]/40">
+                <div className="mb-4 flex items-center justify-between border-b border-border/80 pb-2">
+                  <p className="font-mono text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                    Categories
+                  </p>
+                  <span className="font-mono text-[10px] text-red-700 font-bold">
+                    INDEX [{EVENT_CATEGORIES.length}]
+                  </span>
+                </div>
+                <ul className="space-y-2 font-mono text-xs">
+                  {EVENT_CATEGORIES.map((category) => {
+                    const isSelected = selectedCategory === category && !isSearching
+                    const count = categoryCounts[category] || 0
+                    return (
+                      <li key={category}>
+                        <button
+                          type="button"
+                          suppressHydrationWarning
+                          onClick={() => {
+                            setSelectedCategory(category)
+                            setSearchQuery("")
+                          }}
+                          className={`group flex w-full items-center justify-between border-2 px-3 py-2.5 text-left transition-all ${
+                            isSelected
+                              ? "border-foreground bg-foreground text-background retro-shadow-sm"
+                              : "border-border/80 bg-background/70 text-foreground hover:border-foreground/60 hover:bg-foreground/5"
                           }`}
-                        />
-                      </button>
-                    </li>
-                  ))}
+                        >
+                          <span className="flex items-center gap-2">
+                            <span
+                              className={`inline-block h-1.5 w-1.5 ${
+                                isSelected ? "bg-red-500" : "bg-muted-foreground/40 group-hover:bg-red-700"
+                              }`}
+                            />
+                            <span className="font-bold tracking-wider uppercase">{category}</span>
+                          </span>
+                          <span
+                            className={`font-mono text-[11px] ${
+                              isSelected ? "font-bold text-red-400" : "text-muted-foreground"
+                            }`}
+                          >
+                            [{String(count).padStart(2, "0")}]
+                          </span>
+                        </button>
+                      </li>
+                    )
+                  })}
                 </ul>
               </div>
+
+              {/* EVENTS GRID */}
               <div className="flex-1 p-6">
-                <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-                  <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                <div className="mb-6 flex flex-wrap items-center justify-between gap-2 border-b border-border/80 pb-3">
+                  <p className="font-mono text-xs font-bold uppercase tracking-widest text-foreground">
                     {isSearching
-                      ? `Search Results (${filteredEvents.length})`
-                      : `${selectedCategory} Events`}
+                      ? `QUERY: "${searchQuery}" // MATCHES: ${filteredEvents.length}`
+                      : `${selectedCategory} Events [${filteredEvents.length}]`}
                   </p>
                   {isSearching && (
                     <button
                       type="button"
+                      suppressHydrationWarning
                       onClick={() => setSearchQuery("")}
-                      className="text-xs text-muted-foreground underline hover:text-foreground"
+                      className="border border-border bg-background px-2 py-0.5 font-mono text-xs text-muted-foreground transition-colors hover:border-foreground hover:bg-foreground hover:text-background"
                     >
-                      Clear search
+                      Clear query [ESC]
                     </button>
                   )}
                 </div>
+
                 {filteredEvents.length > 0 ? (
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {filteredEvents.map((event) => (
-                      <div key={event.id} className="flex flex-col border border-border p-4">
-                        <div className="relative aspect-video border-b border-border">
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    {filteredEvents.map((event, index) => (
+                      <div
+                        key={event.id}
+                        className="group relative flex flex-col border-2 border-foreground/20 bg-background p-4 retro-shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-foreground/70 hover:retro-shadow"
+                      >
+                        {/* Ticket pass top header */}
+                        <div className="mb-2.5 flex items-center justify-between border-b border-border/80 pb-2">
+                          <span className="font-mono text-[10px] font-bold tracking-widest text-red-700 uppercase">
+                            PASS #{String(index + 1).padStart(3, "0")}
+                          </span>
+                          <span className="border border-foreground/30 bg-[#ddd0aa]/60 px-2 py-0.5 font-mono text-[9px] font-bold tracking-wider text-foreground uppercase">
+                            {event.category}
+                          </span>
+                        </div>
+
+                        {/* Event poster */}
+                        <div className="relative aspect-video w-full overflow-hidden border border-foreground/20 bg-black/5">
                           <Image
                             src={event.posterUrl}
                             alt={event.name}
                             fill
-                            className="object-cover"
+                            className="object-cover transition-transform duration-300 group-hover:scale-105"
                             sizes="(max-width: 640px) 100vw, 33vw"
                           />
                         </div>
-                        <div className="flex flex-1 flex-col gap-3 pt-4">
-                          <span className="w-fit border border-border px-2 py-1 text-xs uppercase tracking-widest text-muted-foreground">
-                            {event.category}
-                          </span>
-                          <h3 className="text-lg font-bold">{event.name}</h3>
-                          <a
-                            href={event.regLink}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="mt-auto w-fit border border-border px-3 py-2 text-sm transition-colors hover:border-primary hover:text-primary"
-                          >
-                            Register on Aspireup
-                          </a>
+
+                        {/* Perforated ticket divider */}
+                        <div className="relative my-3 flex items-center">
+                          <span className="w-full border-t-2 border-dashed border-border/80" />
+                        </div>
+
+                        {/* Details */}
+                        <div className="flex flex-1 flex-col justify-between gap-3">
+                          <h3 className="line-clamp-2 text-base font-bold tracking-tight text-foreground">
+                            {event.name}
+                          </h3>
+
+                          <div className="pt-2">
+                            <a
+                              href={event.regLink}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="retro-btn flex w-full items-center justify-center gap-2 border-2 border-foreground bg-red-700 px-4 py-2 font-mono text-xs font-bold tracking-wider text-[#ede1c5] uppercase transition-colors hover:bg-red-800"
+                            >
+                              <span>Register on Aspireup</span>
+                              <span aria-hidden className="text-[10px]">▶</span>
+                            </a>
+                          </div>
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="py-12 text-center">
-                    <p className="text-sm text-muted-foreground">
+                  <div className="border-2 border-dashed border-border/80 py-16 text-center">
+                    <p className="font-mono text-sm text-muted-foreground">
                       {isSearching
-                        ? `No events found matching "${searchQuery}"`
-                        : "No events in this category yet"}
+                        ? `[!] NO_RESULTS: No events found matching "${searchQuery}"`
+                        : "[!] NO_EVENTS: No events listed in this category yet"}
                     </p>
                     {isSearching && (
                       <button
                         type="button"
+                        suppressHydrationWarning
                         onClick={() => setSearchQuery("")}
-                        className="mt-3 border border-border px-3 py-1.5 text-xs transition-colors hover:border-foreground hover:bg-foreground hover:text-background"
+                        className="mt-4 border-2 border-foreground bg-foreground px-4 py-1.5 font-mono text-xs font-bold text-background transition-colors hover:bg-red-700 hover:border-red-700"
                       >
-                        Clear search
+                        Reset search filters
                       </button>
                     )}
                   </div>
@@ -322,33 +476,77 @@ export default function Page() {
           </div>
         </section>
 
-        <section id="themes" className="border-b border-border">
-          <div className="mx-auto max-w-6xl px-6 py-20">
-            <h2 className="mb-2 text-center text-3xl font-bold">Themes</h2>
-            <p className="mb-10 text-center text-sm text-muted-foreground">
-              Explore the tracks for this year&apos;s edition
+        {/* THEMES SECTION */}
+        <section id="themes" className="relative border-b-2 border-foreground/15 py-20">
+          <div className="mx-auto max-w-6xl px-6">
+            <div className="mb-2 flex items-center justify-center gap-2 font-mono text-xs font-bold tracking-widest text-red-700 uppercase">
+              <span>[ ARCHIVE // 08 CURATED TRACKS ]</span>
+            </div>
+            <h2 className="mb-2 text-center text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              Themes & Tracks
+            </h2>
+            <p className="mb-8 text-center font-mono text-xs text-muted-foreground">
+              Explore the specialized innovation tracks for this year&apos;s edition
             </p>
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
-              {THEMES.map((theme) => (
-                <div key={theme} className="border border-border">
-                  <div className="flex aspect-video items-center justify-center border-b border-border text-xs text-muted-foreground">
-                    Image
-                  </div>
-                  <div className="p-3 text-sm font-medium">{theme}</div>
-                </div>
-              ))}
+          </div>
+
+          {/* Viewfinder HUD Container */}
+          <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="relative h-[600px] w-full overflow-hidden border-2 border-foreground/25 bg-[#e4d7b8]/40 retro-shadow md:h-[700px]">
+              {/* Corner HUD markers */}
+              <span className="pointer-events-none absolute top-3 left-3 z-10 font-mono text-[11px] font-bold text-foreground/60">
+                ⌜ 01 // NORTH
+              </span>
+              <span className="pointer-events-none absolute top-3 right-3 z-10 font-mono text-[11px] font-bold text-foreground/60">
+                FOV: 45° ⌝
+              </span>
+              <span className="pointer-events-none absolute bottom-3 left-3 z-10 font-mono text-[11px] font-bold text-foreground/60">
+                ⌞ 360° CYLINDER
+              </span>
+              <span className="pointer-events-none absolute bottom-3 right-3 z-10 font-mono text-[11px] font-bold text-foreground/60">
+                CONVERGENCE 2K26 ⌟
+              </span>
+
+              {/* Top Viewfinder Badge */}
+              <div className="pointer-events-none absolute inset-x-0 top-3 z-10 flex justify-center">
+                <span className="border border-border/80 bg-background/90 px-3 py-0.5 font-mono text-[10px] tracking-widest text-muted-foreground uppercase shadow-xs">
+                  DIAL-A-TRACK // CYLINDRICAL VIEWPORT
+                </span>
+              </div>
+
+              <CircularGallery
+                items={THEME_ITEMS}
+                bend={2.4}
+                textColor="#171412"
+                borderRadius={0.05}
+                scrollEase={0.03}
+                font="700 20px 'Geist Mono', monospace"
+              />
+
+              {/* Bottom Tuner Bar Hint */}
+              <div className="pointer-events-none absolute inset-x-0 bottom-4 z-10 flex justify-center">
+                <span className="border-2 border-foreground/50 bg-background px-4 py-1.5 font-mono text-xs font-bold tracking-widest text-foreground retro-shadow-sm uppercase">
+                  ◄◄ DRAG OR SCROLL TO TUNE TRACKS ►►
+                </span>
+              </div>
             </div>
           </div>
         </section>
 
-        <section id="clubs" className="border-b border-border">
-          <div className="mx-auto max-w-6xl px-6 py-20 text-center">
-            <h2 className="mb-2 text-3xl font-bold">Organised By</h2>
-            <p className="mx-auto mb-10 max-w-xl text-sm text-muted-foreground">
-              Convergence 2K25R is brought to you by 55 student clubs and technical societies working together to create an unforgettable experience
+        {/* ORGANISED BY / CLUBS SECTION */}
+        <section id="clubs" className="relative border-b-2 border-foreground/15 py-20">
+          <div className="mx-auto max-w-6xl px-6 text-center">
+            <div className="mb-2 flex items-center justify-center gap-2 font-mono text-xs font-bold tracking-widest text-red-700 uppercase">
+              <span>[ COMMUNITY ALLIANCE // 55 CHAPTERS ]</span>
+            </div>
+            <h2 className="mb-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              Organised By
+            </h2>
+            <p className="mx-auto mb-10 max-w-xl font-mono text-xs text-muted-foreground">
+              Convergence 2K26 is brought to you by 55 student clubs and technical societies working together to create an unforgettable experience
             </p>
-            <Logos count={0} />
-            <div className="mt-12 w-full" style={{ height: '400px' }}>
+
+            <div className="mt-4 w-full" style={{ height: '400px' }}>
               <DomeGallery
                 images={CLUB_IMAGES}
                 fit={0.6}
@@ -368,29 +566,41 @@ export default function Page() {
                 hideOverlays={true}
               />
             </div>
-            <p className="mt-6 text-center text-sm text-muted-foreground">
-              Drag to explore • Click to enlarge
+            <p className="mt-6 font-mono text-xs font-bold tracking-wider text-muted-foreground uppercase">
+              [ ◄ DRAG DOME TO EXPLORE • CLICK SPHERE TO ENLARGE ► ]
             </p>
           </div>
         </section>
 
-        <section id="contact" className="border-b border-border">
-          <div className="mx-auto max-w-6xl space-y-16 px-6 py-20">
+        {/* COORDINATORS & CONTACT SECTION */}
+        <section id="contact" className="relative border-b-2 border-foreground/15 py-20">
+          <div className="mx-auto max-w-6xl space-y-16 px-6">
             <div>
-              <h2 className="mb-2 text-center text-3xl font-bold">Faculty Coordinators</h2>
-              <p className="mb-8 text-center text-sm text-muted-foreground">
-                Meet our dedicated faculty coordinators.
+              <div className="mb-2 flex items-center justify-center gap-2 font-mono text-xs font-bold tracking-widest text-red-700 uppercase">
+                <span>[ DIRECTORY // FACULTY SUPERVISORS ]</span>
+              </div>
+              <h2 className="mb-2 text-center text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                Faculty Coordinators
+              </h2>
+              <p className="mb-8 text-center font-mono text-xs text-muted-foreground">
+                Official faculty committee directing operations and coordination.
               </p>
-              <div className="grid gap-6 sm:grid-cols-3">
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {FACULTY_COORDINATORS.map((person, i) => (
                   <ContactCard key={i} {...person} isFaculty={true} />
                 ))}
               </div>
             </div>
-            <div>
-              <h2 className="mb-2 text-center text-3xl font-bold">Contact Us</h2>
-              <p className="mb-8 text-center text-sm text-muted-foreground">
-                Get in touch with our team for any inquiries.
+
+            <div className="border-t-2 border-dashed border-border/80 pt-16">
+              <div className="mb-2 flex items-center justify-center gap-2 font-mono text-xs font-bold tracking-widest text-red-700 uppercase">
+                <span>[ HOTLINE // STUDENT COORDINATORS ]</span>
+              </div>
+              <h2 className="mb-2 text-center text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                Contact Us
+              </h2>
+              <p className="mb-8 text-center font-mono text-xs text-muted-foreground">
+                Get in direct touch with student leads for immediate assistance.
               </p>
               <div className="grid gap-6 sm:grid-cols-3">
                 {EVENT_COORDINATORS.map((person, i) => (
@@ -402,24 +612,39 @@ export default function Page() {
         </section>
       </main>
 
-      <footer>
+      {/* FOOTER */}
+      <footer className="border-t-2 border-foreground/15 bg-background">
         <motion.div
-          className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-6 py-10 text-sm text-muted-foreground"
+          className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-6 py-12 text-sm text-muted-foreground"
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.8 }}
           transition={{ duration: 0.55, ease: "easeOut" }}
         >
+          {/* Colophon readout */}
+          <div className="flex flex-wrap items-center justify-center gap-3 border-b border-border/80 pb-4 text-center font-mono text-xs">
+            <span className="flex items-center gap-1.5 font-bold text-foreground">
+              <span className="inline-block h-2 w-2 rounded-full bg-emerald-600 animate-pulse" />
+              SYS_STATUS: ONLINE
+            </span>
+            <span className="text-border">|</span>
+            <span>CONVERGENCE 2K26 OS v2.6</span>
+            <span className="text-border">|</span>
+            <span>VNR VJIET HYDERABAD</span>
+          </div>
+
           <motion.p
             initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1, duration: 0.4 }}
+            className="font-mono text-xs uppercase tracking-widest"
           >
-            Follow us on social media
+            Connect With The Network
           </motion.p>
+
           <motion.div
-            className="flex flex-wrap justify-center gap-8"
+            className="flex flex-wrap justify-center gap-4 sm:gap-6"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -428,56 +653,33 @@ export default function Page() {
               visible: { transition: { staggerChildren: 0.12, delayChildren: 0.18 } },
             }}
           >
-            <motion.a
-              href="https://www.instagram.com/convergence2k26_vnrvjiet/"
-              target="_blank"
-              rel="noreferrer"
-              variants={{ hidden: { opacity: 0, y: 10 },visible: { opacity: 1, y: 0 } }}
-              whileHover={{ y: -4 }}
-              whileFocus={{ y: -4 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
-              className="group relative outline-none"
-            >
-              <span className="block border border-border px-3 py-1 transition-colors duration-300 group-hover:border-primary group-hover:text-foreground group-focus-visible:border-primary group-focus-visible:text-foreground">
-                Instagram
-              </span>
-              <span className="absolute bottom-0 left-1/2 h-px w-0 -translate-x-1/2 bg-primary transition-all duration-300 group-hover:w-full group-focus-visible:w-full" />
-            </motion.a>
-            <motion.a
-              href="mailto:convergence@vnrvjiet.in"
-              variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
-              whileHover={{ y: -4 }}
-              whileFocus={{ y: -4 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
-              className="group relative outline-none"
-            >
-              <span className="block border border-border px-3 py-1 transition-colors duration-300 group-hover:border-primary group-hover:text-foreground group-focus-visible:border-primary group-focus-visible:text-foreground">
-                Email
-              </span>
-              <span className="absolute bottom-0 left-1/2 h-px w-0 -translate-x-1/2 bg-primary transition-all duration-300 group-hover:w-full group-focus-visible:w-full" />
-            </motion.a>
-            <motion.a
-              href="https://www.linkedin.com/school/vnrvjiethyd/home/"
-              target="_blank"
-              rel="noreferrer"
-              variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
-              whileHover={{ y: -4 }}
-              whileFocus={{ y: -4 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
-              className="group relative outline-none"
-            >
-              <span className="block border border-border px-3 py-1 transition-colors duration-300 group-hover:border-primary group-hover:text-foreground group-focus-visible:border-primary group-focus-visible:text-foreground">
-                LinkedIn
-              </span>
-              <span className="absolute bottom-0 left-1/2 h-px w-0 -translate-x-1/2 bg-primary transition-all duration-300 group-hover:w-full group-focus-visible:w-full" />
-            </motion.a>
-            {/* <a href="https://linktr.ee/convergence2k26">
-              <span className="border border-border px-3 py-1">Linktree</span>
-            </a> */}
+            {[
+              { label: "INSTAGRAM", href: "https://www.instagram.com/convergence2k26_vnrvjiet/" },
+              { label: "EMAIL", href: "mailto:convergence@vnrvjiet.in" },
+              { label: "LINKEDIN", href: "https://www.linkedin.com/school/vnrvjiethyd/home/" },
+            ].map((social) => (
+              <motion.a
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noreferrer"
+                variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+                whileHover={{ y: -2 }}
+                whileTap={{ y: 0 }}
+                className="retro-btn border-2 border-foreground/30 bg-background px-4 py-1.5 font-mono text-xs font-bold tracking-wider text-foreground uppercase hover:border-red-700 hover:bg-red-700 hover:text-[#ede1c5] transition-colors"
+              >
+                [ {social.label} ]
+              </motion.a>
+            ))}
           </motion.div>
+
+          <p className="mt-4 text-center font-mono text-[10px] tracking-wide text-muted-foreground/80">
+            © 2026 CONVERGENCE • VNR VIGNANA JYOTHI INSTITUTE OF ENGINEERING AND TECHNOLOGY
+          </p>
         </motion.div>
       </footer>
 
+      {/* FLOATING GDGC VOLUNTEER BADGE */}
       <div
         className="fixed bottom-5 right-5 z-50 sm:bottom-7 sm:right-7"
         onMouseEnter={() => setIsCreditHovered(true)}
@@ -486,13 +688,18 @@ export default function Page() {
         <AnimatePresence>
           {isCreditOpen && (
             <motion.div
-              initial={{ opacity: 0, x: 16, scale: 0.92 }}
+              initial={{ opacity: 0, x: 16, scale: 0.94 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: 16, scale: 0.92 }}
+              exit={{ opacity: 0, x: 16, scale: 0.94 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="absolute bottom-1 right-16 w-max max-w-[calc(100vw-7rem)] border border-border bg-background px-4 py-3 text-xs font-medium shadow-lg"
+              className="absolute bottom-1 right-16 w-max max-w-[calc(100vw-7rem)] border-2 border-foreground bg-background p-3 font-mono text-xs retro-shadow"
             >
-              Developed by GDGC Web Dev Volunteers
+              <div className="mb-1.5 flex items-center gap-1.5 border-b border-border pb-1 font-mono text-[10px] font-bold text-red-700 tracking-wider uppercase">
+                <span className="h-1.5 w-1.5 bg-red-700" />
+                <span>DEV_TERMINAL // CREDITS</span>
+              </div>
+              <p className="font-bold text-foreground">Developed by GDGC Web Dev Volunteers</p>
+              <p className="mt-0.5 text-[10px] text-muted-foreground">Google Developer Groups on Campus • VNRVJIET</p>
             </motion.div>
           )}
         </AnimatePresence>
@@ -500,20 +707,25 @@ export default function Page() {
           type="button"
           aria-label="Show development credit"
           aria-expanded={isCreditOpen}
+          suppressHydrationWarning
           onClick={() => setIsCreditPinned((isPinned) => !isPinned)}
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.94 }}
-          className="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border-2 border-foreground bg-black shadow-lg outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-primary"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="retro-btn relative flex h-13 w-13 items-center justify-center overflow-hidden rounded-md border-2 border-foreground bg-[#171412] p-1.5 shadow-md outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-primary"
         >
-          <Image
-            src="/clubs/club-gdgc2.png"
-            alt="GDGC logo"
-            fill
-            sizes="256px"
-            className="scale-250 object-contain"
-          />
+          <div className="relative h-full w-full">
+            <Image
+              src="/clubs/club-gdgc2.png"
+              alt="GDGC logo"
+              fill
+              sizes="64px"
+              className="object-contain"
+            />
+          </div>
+          <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-emerald-500 ring-1 ring-black" title="System Dev Status" />
         </motion.button>
       </div>
     </div>
   )
 }
+

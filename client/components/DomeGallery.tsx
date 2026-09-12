@@ -819,6 +819,7 @@ export default function DomeGallery({
                     className="item__image absolute block overflow-hidden cursor-pointer bg-gray-200 transition-transform duration-300"
                     role="button"
                     tabIndex={0}
+                    suppressHydrationWarning
                     aria-label={it.alt || 'Open image'}
                     onClick={e => {
                       if (draggingRef.current) return;

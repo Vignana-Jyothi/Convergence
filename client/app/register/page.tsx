@@ -41,7 +41,7 @@ export default function RegisterPage() {
       <main className="mx-auto max-w-xl px-6 py-20">
         <h1 className="mb-8 text-center text-3xl font-bold">Create Account</h1>
         
-        <form onSubmit={handleSubmit} className="space-y-4 border border-border p-6">
+        <form onSubmit={handleSubmit} suppressHydrationWarning className="space-y-4 border border-border p-6">
           <div className="space-y-2">
             <label className="text-sm font-medium">Full Name</label>
             <input required type="text" name="name" onChange={handleChange} className="w-full border border-border bg-transparent p-2 text-sm" />
@@ -94,6 +94,7 @@ export default function RegisterPage() {
 
           <button 
             type="submit" 
+            suppressHydrationWarning
             disabled={status.type === 'loading'}
             className="mt-6 w-full bg-foreground py-2 text-sm font-bold text-background disabled:opacity-50"
           >

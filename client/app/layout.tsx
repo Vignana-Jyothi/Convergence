@@ -1,6 +1,9 @@
 import { Black_Ops_One, Geist, Geist_Mono, Inter } from "next/font/google"
 
 import "./globals.css"
+import "@/components/SplitFlapText.css"
+import "@/components/PillNav.css"
+import "@/components/CircularGallery.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
 
@@ -45,7 +48,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

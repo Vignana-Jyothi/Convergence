@@ -157,6 +157,42 @@
     font-style: normal;
 }
 
+.retro-grid-bg {
+    background-image: radial-gradient(circle, rgba(23, 20, 18, 0.08) 1.2px, transparent 1.2px);
+    background-size: 24px 24px;
+}
+
+.retro-shadow-sm {
+    box-shadow: 2px 2px 0px #171412;
+}
+
+.retro-shadow {
+    box-shadow: 3px 3px 0px #171412;
+}
+
+.retro-shadow-red {
+    box-shadow: 3px 3px 0px #b91c1c;
+}
+
+.retro-btn {
+    box-shadow: 2px 2px 0px #171412;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease;
+}
+
+.retro-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #171412;
+}
+
+@keyframes retro-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.animate-blink {
+    animation: retro-blink 1s steps(2, start) infinite;
+}
+
 .grain-text {
     color: transparent;
     background-image:
@@ -177,4 +213,4 @@
   html {
     @apply font-sans;
     }
-}
+}
