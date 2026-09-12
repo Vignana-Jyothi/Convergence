@@ -406,5 +406,26 @@ export const EVENTS: Event[] = [
 		posterUrl: "/events/IMG-20260912-WA0005.jpg.jpeg",
 		regLink: "https://aspireup.ai/organization/https-edu-ieee-org-in-vnrvjiet/event/100173",
 	},
+	{
+		id: "space-box-race",
+		name: "Space Box Race - Mini Soapbox Challenge",
+		category: "Sports",
+		posterUrl: "/events/space box race.png",
+		regLink: "https://aspireup.ai/organization/kaksya-sastra-vnrvjiet/event/100185",
+	},
+	{
+		id: "rocketry-workshop",
+		name: "Rocketry Workshop",
+		category: "Technical",
+		posterUrl: "/events/rocketry workshop.png",
+		regLink: "https://aspireup.ai/organization/kaksya-sastra-vnrvjiet/event/100187",
+	},
+	{
+		id: "telescope-workshop",
+		name: "Telescope Workshop",
+		category: "Technical",
+		posterUrl: "/events/telescope workshop.png",
+		regLink: "https://aspireup.ai/organization/kaksya-sastra-vnrvjiet/event/100186",
+	},
 ]
 

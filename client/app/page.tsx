@@ -910,7 +910,7 @@ export default function Page() {
           onClick={toggleCredit}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="retro-btn relative flex h-13 w-13 items-center justify-center overflow-hidden rounded-md border-2 border-foreground bg-[#171412] p-1.5 shadow-md outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-primary"
+          className="retro-btn relative flex h-13 w-13 items-center justify-center overflow-hidden rounded-md border-2 border-foreground bg-[#ffffff] p-1.5 shadow-md outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-primary"
         >
           <div className="relative h-[160px] w-[160px] overflow-hidden">
             <Image
