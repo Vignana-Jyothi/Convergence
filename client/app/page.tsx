@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { AnimatePresence, motion } from "framer-motion"
+import { Search, X } from "lucide-react"
 import { useState } from "react"
 
 import { EVENTS } from "@/data/events"
@@ -146,11 +147,60 @@ function ContactCard({ name, role, phone, isFaculty }: { name: string; role?: st
   )
 }
 
+function EventSearch({
+  value,
+  onChange,
+  onClear,
+}: {
+  value: string
+  onChange: (value: string) => void
+  onClear: () => void
+}) {
+  return (
+    <div className="mx-auto mb-8 max-w-md">
+      <div className="relative">
+        <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="Search events by name or category..."
+          className="w-full border border-border bg-background py-2.5 pl-10 pr-9 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:border-foreground focus:outline-none"
+        />
+        {value && (
+          <button
+            type="button"
+            onClick={onClear}
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-muted-foreground transition-colors hover:text-foreground"
+            aria-label="Clear search"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export default function Page() {
   const [selectedCategory, setSelectedCategory] = useState(EVENT_CATEGORIES[0])
+  const [searchQuery, setSearchQuery] = useState("")
   const [isCreditHovered, setIsCreditHovered] = useState(false)
   const [isCreditPinned, setIsCreditPinned] = useState(false)
-  const filteredEvents = EVENTS.filter((event) => event.category === selectedCategory || selectedCategory === "All")
+
+  const isSearching = searchQuery.trim().length > 0
+  const filteredEvents = isSearching
+    ? EVENTS.filter((event) => {
+        const query = searchQuery.trim().toLowerCase()
+        return (
+          event.name.toLowerCase().includes(query) ||
+          event.category.toLowerCase().includes(query)
+        )
+      })
+    : EVENTS.filter(
+        (event) => event.category === selectedCategory || selectedCategory === "All"
+      )
+
   const isCreditOpen = isCreditHovered || isCreditPinned
 
   return (
@@ -163,6 +213,13 @@ export default function Page() {
         <section id="events" className="border-b border-border">
           <div className="mx-auto max-w-6xl px-6 py-20">
             <h2 className="mb-8 text-center text-3xl font-bold">Events</h2>
+
+            <EventSearch
+              value={searchQuery}
+              onChange={setSearchQuery}
+              onClear={() => setSearchQuery("")}
+            />
+
             <div className="flex flex-col border border-border md:flex-row">
               <div className="border-b border-border p-6 md:sticky md:top-20 md:w-1/3 md:self-start md:border-b-0 md:border-r">
                 <p className="mb-4 text-xs uppercase tracking-widest text-muted-foreground">Categories</p>
@@ -178,7 +235,10 @@ export default function Page() {
                     >
                       <button
                         type="button"
-                        onClick={() => setSelectedCategory(category)}
+                        onClick={() => {
+                          setSelectedCategory(category)
+                          setSearchQuery("")
+                        }}
                         className="flex w-full items-center justify-between text-left"
                       >
                         <span>{category}</span>
@@ -193,9 +253,22 @@ export default function Page() {
                 </ul>
               </div>
               <div className="flex-1 p-6">
-                <p className="mb-4 text-xs uppercase tracking-widest text-muted-foreground">
-                  Selected Category Events
-                </p>
+                <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+                  <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                    {isSearching
+                      ? `Search Results (${filteredEvents.length})`
+                      : `${selectedCategory} Events`}
+                  </p>
+                  {isSearching && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchQuery("")}
+                      className="text-xs text-muted-foreground underline hover:text-foreground"
+                    >
+                      Clear search
+                    </button>
+                  )}
+                </div>
                 {filteredEvents.length > 0 ? (
                   <div className="grid gap-4 sm:grid-cols-2">
                     {filteredEvents.map((event) => (
@@ -227,7 +300,22 @@ export default function Page() {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-sm text-muted-foreground">No events in this category yet</p>
+                  <div className="py-12 text-center">
+                    <p className="text-sm text-muted-foreground">
+                      {isSearching
+                        ? `No events found matching "${searchQuery}"`
+                        : "No events in this category yet"}
+                    </p>
+                    {isSearching && (
+                      <button
+                        type="button"
+                        onClick={() => setSearchQuery("")}
+                        className="mt-3 border border-border px-3 py-1.5 text-xs transition-colors hover:border-foreground hover:bg-foreground hover:text-background"
+                      >
+                        Clear search
+                      </button>
+                    )}
+                  </div>
                 )}
               </div>
             </div>
