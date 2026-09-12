@@ -61,7 +61,7 @@ export default function Clubs() {
   ];
 
   return (
-    
+
       <section className="max-w-7xl mx-auto w-full relative z-10">
         <div className="text-center mb-6 sm:mb-8">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 text-white">
@@ -100,7 +100,7 @@ export default function Clubs() {
 
         <div className="text-center mt-6 sm:mt-8">
           <p className="text-cyan-400 text-xs sm:text-sm">
-            Drag to explore • Click to enlarge
+            Drag to explore & Click to enlarge
           </p>
         </div>
       </section>
