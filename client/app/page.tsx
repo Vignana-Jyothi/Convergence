@@ -19,6 +19,21 @@ const CircularGallery = dynamic(() => import("@/components/CircularGallery"), {
 
 const EVENT_CATEGORIES = ["All", "Technical", "Workshops", "Gaming", "Cultural", "Sports", "Hackathon"]
 
+const EVENTS_PER_PAGE = 8
+
+function getPaginationRange(current: number, total: number): (number | string)[] {
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1)
+  }
+  if (current <= 4) {
+    return [1, 2, 3, 4, 5, "...", total]
+  }
+  if (current >= total - 3) {
+    return [1, "...", total - 4, total - 3, total - 2, total - 1, total]
+  }
+  return [1, "...", current - 1, current, current + 1, "...", total]
+}
+
 const THEMES = [
   "Robotics & Automation",
   "HealthcareTech & Wellness",
@@ -283,6 +298,7 @@ function EventSearch({
 export default function Page() {
   const [selectedCategory, setSelectedCategory] = useState(EVENT_CATEGORIES[0])
   const [searchQuery, setSearchQuery] = useState("")
+  const [currentPage, setCurrentPage] = useState(1)
   const [isCreditHovered, setIsCreditHovered] = useState(false)
   const [isCreditPinned, setIsCreditPinned] = useState(false)
   const creditRef = useRef<HTMLDivElement>(null)
@@ -323,6 +339,32 @@ export default function Page() {
       (event) => event.category === selectedCategory || selectedCategory === "All"
     )
 
+  const totalPages = Math.max(1, Math.ceil(filteredEvents.length / EVENTS_PER_PAGE))
+  const startIndex = (currentPage - 1) * EVENTS_PER_PAGE
+  const endIndex = Math.min(startIndex + EVENTS_PER_PAGE, filteredEvents.length)
+  const paginatedEvents = filteredEvents.slice(startIndex, endIndex)
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1)
+    }
+  }, [currentPage, totalPages])
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > totalPages) return
+    setCurrentPage(newPage)
+    const eventsSection = document.getElementById("events")
+    if (eventsSection) {
+      const headerOffset = 85
+      const elementPosition = eventsSection.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.scrollY - headerOffset
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      })
+    }
+  }
+
   const categoryCounts = EVENT_CATEGORIES.reduce((acc, cat) => {
     acc[cat] = cat === "All" ? EVENTS.length : EVENTS.filter((e) => e.category === cat).length
     return acc
@@ -336,7 +378,7 @@ export default function Page() {
         <Hero />
 
         {/* EVENTS SECTION */}
-        <section id="events" className="relative border-b-2 border-foreground/15 py-20">
+        <section id="events" className="relative border-b-2 border-foreground/15 py-20 scroll-mt-16 md:scroll-mt-20">
           <div className="mx-auto max-w-6xl px-6">
             <div className="mb-2 flex items-center justify-center gap-2 font-mono text-xs font-bold tracking-widest text-red-700 uppercase">
               <span>[ ARCHIVE // EVENT DIRECTORY ]</span>
@@ -350,8 +392,14 @@ export default function Page() {
 
             <EventSearch
               value={searchQuery}
-              onChange={setSearchQuery}
-              onClear={() => setSearchQuery("")}
+              onChange={(query) => {
+                setSearchQuery(query)
+                setCurrentPage(1)
+              }}
+              onClear={() => {
+                setSearchQuery("")
+                setCurrentPage(1)
+              }}
             />
 
             <div className="flex flex-col border-2 border-foreground/20 bg-background/90 md:flex-row retro-shadow">
@@ -377,6 +425,7 @@ export default function Page() {
                           onClick={() => {
                             setSelectedCategory(category)
                             setSearchQuery("")
+                            setCurrentPage(1)
                           }}
                           className={`group flex w-full items-center justify-between border-2 px-3 py-2.5 text-left transition-all ${isSelected
                             ? "border-foreground bg-foreground text-background retro-shadow-sm"
@@ -410,12 +459,20 @@ export default function Page() {
                     {isSearching
                       ? `QUERY: "${searchQuery}" // MATCHES: ${filteredEvents.length}`
                       : `${selectedCategory} Events [${filteredEvents.length}]`}
+                    {filteredEvents.length > 0 && (
+                      <span className="ml-2 text-red-700">
+                        // PAGE {currentPage} OF {totalPages}
+                      </span>
+                    )}
                   </p>
                   {isSearching && (
                     <button
                       type="button"
                       suppressHydrationWarning
-                      onClick={() => setSearchQuery("")}
+                      onClick={() => {
+                        setSearchQuery("")
+                        setCurrentPage(1)
+                      }}
                       className="border border-border bg-background px-2 py-0.5 font-mono text-xs text-muted-foreground transition-colors hover:border-foreground hover:bg-foreground hover:text-background"
                     >
                       Clear query [ESC]
@@ -424,59 +481,150 @@ export default function Page() {
                 </div>
 
                 {filteredEvents.length > 0 ? (
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    {filteredEvents.map((event, index) => (
-                      <div
-                        key={event.id}
-                        className="group relative flex flex-col border-2 border-foreground/20 bg-background p-4 retro-shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-foreground/70 hover:retro-shadow"
-                      >
-                        {/* Ticket pass top header */}
-                        <div className="mb-2.5 flex items-center justify-between border-b border-border/80 pb-2">
-                          <span className="font-mono text-[10px] font-bold tracking-widest text-red-700 uppercase">
-                            PASS #{String(index + 1).padStart(3, "0")}
-                          </span>
-                          <span className="border border-foreground/30 bg-[#ddd0aa]/60 px-2 py-0.5 font-mono text-[9px] font-bold tracking-wider text-foreground uppercase">
-                            {event.category}
-                          </span>
-                        </div>
+                  <>
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      {paginatedEvents.map((event, index) => (
+                        <div
+                          key={event.id}
+                          className="group relative flex flex-col border-2 border-foreground/20 bg-background p-4 retro-shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-foreground/70 hover:retro-shadow"
+                        >
+                          {/* Ticket pass top header */}
+                          <div className="mb-2.5 flex items-center justify-between border-b border-border/80 pb-2">
+                            <span className="font-mono text-[10px] font-bold tracking-widest text-red-700 uppercase">
+                              PASS #{String(startIndex + index + 1).padStart(3, "0")}
+                            </span>
+                            <span className="border border-foreground/30 bg-[#ddd0aa]/60 px-2 py-0.5 font-mono text-[9px] font-bold tracking-wider text-foreground uppercase">
+                              {event.category}
+                            </span>
+                          </div>
 
-                        {/* Event poster */}
-                        <div className="relative aspect-video w-full overflow-hidden border border-foreground/20 bg-black/5">
-                          <Image
-                            src={event.posterUrl}
-                            alt={event.name}
-                            fill
-                            className="object-cover transition-transform duration-300 group-hover:scale-105"
-                            sizes="(max-width: 640px) 100vw, 33vw"
-                          />
-                        </div>
+                          {/* Event poster */}
+                          <div className="relative aspect-video w-full overflow-hidden border border-foreground/20 bg-black/5">
+                            <Image
+                              src={event.posterUrl}
+                              alt={event.name}
+                              fill
+                              className="object-cover transition-transform duration-300 group-hover:scale-105"
+                              sizes="(max-width: 640px) 100vw, 33vw"
+                            />
+                          </div>
 
-                        {/* Perforated ticket divider */}
-                        <div className="relative my-3 flex items-center">
-                          <span className="w-full border-t-2 border-dashed border-border/80" />
-                        </div>
+                          {/* Perforated ticket divider */}
+                          <div className="relative my-3 flex items-center">
+                            <span className="w-full border-t-2 border-dashed border-border/80" />
+                          </div>
 
-                        {/* Details */}
-                        <div className="flex flex-1 flex-col justify-between gap-3">
-                          <h3 className="line-clamp-2 text-base font-bold tracking-tight text-foreground">
-                            {event.name}
-                          </h3>
+                          {/* Details */}
+                          <div className="flex flex-1 flex-col justify-between gap-3">
+                            <h3 className="line-clamp-2 text-base font-bold tracking-tight text-foreground">
+                              {event.name}
+                            </h3>
 
-                          <div className="pt-2">
-                            <a
-                              href={event.regLink}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="retro-btn flex w-full items-center justify-center gap-2 border-2 border-foreground bg-red-700 px-4 py-2 font-mono text-xs font-bold tracking-wider text-[#ede1c5] uppercase transition-colors hover:bg-red-800"
-                            >
-                              <span>Register on Aspireup</span>
-                              <span aria-hidden className="text-[10px]">▶</span>
-                            </a>
+                            <div className="pt-2">
+                              <a
+                                href={event.regLink}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="retro-btn flex w-full items-center justify-center gap-2 border-2 border-foreground bg-red-700 px-4 py-2 font-mono text-xs font-bold tracking-wider text-[#ede1c5] uppercase transition-colors hover:bg-red-800"
+                              >
+                                <span>Register on Aspireup</span>
+                                <span aria-hidden className="text-[10px]">▶</span>
+                              </a>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+
+                    {/* PAGINATION BAR */}
+                    {totalPages > 1 && (
+                      <nav
+                        aria-label="Events pagination"
+                        className="mt-8 flex flex-col items-center justify-between gap-4 border-2 border-foreground/20 bg-[#e8dbbc]/50 p-3.5 retro-shadow-sm sm:flex-row sm:p-4"
+                      >
+                        {/* Page indicator info */}
+                        <div className="flex items-center gap-2 font-mono text-xs font-bold text-foreground">
+                          <span className="inline-block h-2 w-2 bg-red-700 animate-pulse" />
+                          <span>
+                            SHOWING {String(startIndex + 1).padStart(2, "0")}–{String(endIndex).padStart(2, "0")} OF {String(filteredEvents.length).padStart(2, "0")} EVENTS
+                          </span>
+                          <span className="hidden text-muted-foreground md:inline">|</span>
+                          <span className="hidden text-red-700 md:inline">
+                            PAGE [{String(currentPage).padStart(2, "0")}/{String(totalPages).padStart(2, "0")}]
+                          </span>
+                        </div>
+
+                        {/* Navigation controls */}
+                        <div className="flex flex-wrap items-center justify-center gap-1.5 font-mono">
+                          {/* PREV */}
+                          <button
+                            type="button"
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className={`retro-btn flex h-8 items-center gap-1 border-2 border-foreground px-3 font-mono text-xs font-bold uppercase transition-all ${
+                              currentPage === 1
+                                ? "opacity-35 cursor-not-allowed bg-background/50 text-muted-foreground border-foreground/30"
+                                : "bg-background text-foreground hover:bg-foreground hover:text-background"
+                            }`}
+                            aria-label="Previous page"
+                          >
+                            <span aria-hidden>◀</span>
+                            <span className="hidden sm:inline">PREV</span>
+                          </button>
+
+                          {/* Page Numbers */}
+                          {getPaginationRange(currentPage, totalPages).map((item, idx) => {
+                            if (item === "...") {
+                              return (
+                                <span
+                                  key={`ellipsis-${idx}`}
+                                  className="flex h-8 min-w-[28px] items-center justify-center font-mono text-xs font-bold text-muted-foreground select-none"
+                                >
+                                  ...
+                                </span>
+                              )
+                            }
+
+                            const pageNum = item as number
+                            const isCurrent = pageNum === currentPage
+
+                            return (
+                              <button
+                                key={pageNum}
+                                type="button"
+                                onClick={() => handlePageChange(pageNum)}
+                                aria-current={isCurrent ? "page" : undefined}
+                                aria-label={`Page ${pageNum}`}
+                                className={`retro-btn flex h-8 min-w-[34px] items-center justify-center border-2 px-2.5 font-mono text-xs font-bold transition-all ${
+                                  isCurrent
+                                    ? "border-foreground bg-red-700 text-[#ede1c5] retro-shadow-sm font-black scale-105"
+                                    : "border-border/90 bg-background/80 text-foreground hover:border-foreground hover:bg-foreground hover:text-background"
+                                }`}
+                              >
+                                {String(pageNum).padStart(2, "0")}
+                              </button>
+                            )
+                          })}
+
+                          {/* NEXT */}
+                          <button
+                            type="button"
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                            className={`retro-btn flex h-8 items-center gap-1 border-2 border-foreground px-3 font-mono text-xs font-bold uppercase transition-all ${
+                              currentPage === totalPages
+                                ? "opacity-35 cursor-not-allowed bg-background/50 text-muted-foreground border-foreground/30"
+                                : "bg-background text-foreground hover:bg-foreground hover:text-background"
+                            }`}
+                            aria-label="Next page"
+                          >
+                            <span className="hidden sm:inline">NEXT</span>
+                            <span aria-hidden>▶</span>
+                          </button>
+                        </div>
+                      </nav>
+                    )}
+                  </>
                 ) : (
                   <div className="border-2 border-dashed border-border/80 py-16 text-center">
                     <p className="font-mono text-sm text-muted-foreground">
@@ -488,7 +636,10 @@ export default function Page() {
                       <button
                         type="button"
                         suppressHydrationWarning
-                        onClick={() => setSearchQuery("")}
+                        onClick={() => {
+                          setSearchQuery("")
+                          setCurrentPage(1)
+                        }}
                         className="mt-4 border-2 border-foreground bg-foreground px-4 py-1.5 font-mono text-xs font-bold text-background transition-colors hover:bg-red-700 hover:border-red-700"
                       >
                         Reset search filters
