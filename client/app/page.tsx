@@ -30,10 +30,16 @@ const THEMES = [
   "Tech for Social Good",
 ]
 
-const THEME_ITEMS = THEMES.map((theme, index) => ({
-  image: `https://picsum.photos/seed/theme-${index + 1}/800/600?grayscale`,
-  text: theme,
-}))
+const THEME_ITEMS = [
+  { image: "/themes/robotic-automation.jpeg", text: "Robotics & Automation" },
+  { image: "/themes/health-and-wellness.png", text: "HealthcareTech & Wellness" },
+  { image: "/themes/mobility-and-logistics.png", text: "Mobility & Logistics" },
+  { image: "/themes/green-technologies.jpg", text: "Green Technologies" },
+  { image: "/themes/fintech.jpg", text: "Enterprise & Fintech" },
+  { image: "/themes/design-and-manufacturing.jpg", text: "Design & Manufacturing" },
+  { image: "/themes/smart-living.jpg", text: "Smart Living" },
+  { image: "/themes/tech-for-social-good.png", text: "Tech for Social Good" },
+]
 
 // const FACULTY_COORDINATORS = [
 //   { name: "[Name]", role: "[Department]", phone: "[Phone number]" },
