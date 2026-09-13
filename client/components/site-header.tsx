@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { label: "Themes", href: "#themes" },
   { label: "Organised By", href: "#clubs" },
   { label: "Contact", href: "#contact" },
+  { label: "Developers", href: "#developers" },
 ]
 
 export function SiteHeader() {
@@ -17,7 +18,15 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-black/20 bg-red-700">
       <div className="relative mx-auto flex h-16 w-full max-w-[1332px] items-center justify-between px-3 md:h-20 md:px-0">
-        <a href="#home" className="mr-3 flex shrink-0 items-center md:mr-0">
+        <a
+          href="#home"
+          onClick={(e) => {
+            e.preventDefault()
+            window.scrollTo({ top: 0, behavior: "smooth" })
+            window.history.pushState(null, "", "#home")
+          }}
+          className="mr-3 flex shrink-0 items-center md:mr-0"
+        >
           <span
             className="h-8 w-8 shrink-0 bg-[#ede1c5]"
             style={{

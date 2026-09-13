@@ -2,7 +2,12 @@
 
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import './PillNav.css';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollToPlugin);
+}
 
 export interface PillNavItem {
   label: string;
@@ -103,7 +108,7 @@ const PillNav: React.FC<PillNavProps> = ({
     window.addEventListener('resize', onResize);
 
     if (document.fonts?.ready) {
-      document.fonts.ready.then(layout).catch(() => {});
+      document.fonts.ready.then(layout).catch(() => { });
     }
 
     if (initialLoadAnimation) {
@@ -176,6 +181,50 @@ const PillNav: React.FC<PillNavProps> = ({
     });
   };
 
+  const handleItemClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith('#')) {
+      e.preventDefault();
+
+      if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const target = href === '#home' ? document.getElementById('home') : document.querySelector(href);
+        target?.scrollIntoView();
+        window.history.pushState(null, '', href);
+        return;
+      }
+
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+      const headerOffset = isMobile ? 64 : 80;
+
+      if (href === '#home') {
+        gsap.to(window, {
+          duration: 0.25,
+          scrollTo: { y: 0 },
+          ease: 'power3.inOut',
+          overwrite: 'auto',
+          onComplete: () => {
+            window.history.pushState(null, '', href);
+          }
+        });
+        return;
+      }
+
+      const target = document.querySelector(href);
+      if (target) {
+        gsap.to(window, {
+          duration: 0.85,
+          scrollTo: { y: target, offsetY: headerOffset },
+          ease: 'power3.inOut',
+          overwrite: 'auto',
+          onComplete: () => {
+            window.history.pushState(null, '', href);
+          }
+        });
+      } else {
+        window.location.hash = href;
+      }
+    }
+  };
+
   const cssVars = {
     ['--base']: baseColor,
     ['--pill-bg']: pillColor,
@@ -192,6 +241,7 @@ const PillNav: React.FC<PillNavProps> = ({
             className="pill-logo"
             href={items?.[0]?.href || '#home'}
             aria-label="Home"
+            onClick={(e) => handleItemClick(e, items?.[0]?.href || '#home')}
             onMouseEnter={handleLogoEnter}
             ref={el => {
               logoRef.current = el;
@@ -210,6 +260,7 @@ const PillNav: React.FC<PillNavProps> = ({
                   href={item.href}
                   className={`pill${activeHref === item.href ? ' is-active' : ''}`}
                   aria-label={item.ariaLabel || item.label}
+                  onClick={(e) => handleItemClick(e, item.href)}
                   onMouseEnter={() => handleEnter(i)}
                   onMouseLeave={() => handleLeave(i)}
                 >

@@ -150,7 +150,7 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative isolate flex min-h-[calc(100vh-5rem)] items-center justify-center overflow-hidden text-black"
+      className="relative isolate flex min-h-[calc(100vh-5rem)] items-center justify-center overflow-hidden text-black scroll-mt-16 md:scroll-mt-20"
       style={{ backgroundColor: PAPER }}
     >
       <div

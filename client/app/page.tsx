@@ -4,6 +4,7 @@ import Image from "next/image"
 import dynamic from "next/dynamic"
 import { AnimatePresence, motion } from "framer-motion"
 import { Search, X } from "lucide-react"
+import { Instagram } from "@/components/icons"
 import { useEffect, useRef, useState } from "react"
 
 import { EVENTS } from "@/data/events"
@@ -65,9 +66,55 @@ const FACULTY_COORDINATORS = [
 ]
 
 const EVENT_COORDINATORS = [
-  { name: "Srikar Burgula", role: ["Events Coordinator"], phone: "+91 8328292124" },
-  { name: "P Maheshwar", role: ["Web & IT Coordinator"], phone: "+91 9515871625" },
-  { name: "E. V. Gaurav", role: ["Registrations & Help Desk Coordinator"], phone: "+91 8179590621" },
+  { name: "P Maheshwar", role: ["Web & IT Coordinator"], phone: "+91 9515871625", photoUrl: "/coordinators/mahesh.jpeg" },
+  { name: "E. V. Gaurav", role: ["Registrations & Help Desk Coordinator"], phone: "+91 8179590621", photoUrl: "/coordinators/gaurav.jpeg" },
+  { name: "Sarvani Divakarla", role: ["Web & IT Coordinator"], phone: "+91 8179590621", photoUrl: "/coordinators/sarvani divakarla.jpeg" },
+  { name: "Naga Sresht", role: ["Web & IT Coordinator"], phone: "+91 8179590621", photoUrl: "/coordinators/naga sresht.jpeg" },
+]
+
+const DEVELOPERS = [
+  {
+    name: "Sruthi Sami",
+    role: ["Web Dev Team, GDGC"],
+    phone: "+91 9866832109",
+    photoUrl: "/developers/sruthi.jpg.jpeg",
+    instagram: "@sruthisamii",
+  },
+  {
+    name: "Amruth Padmanaban",
+    role: ["Web Dev Team, GDGC"],
+    phone: "+91 9014714939",
+    photoUrl: "/developers/amruth.jpeg",
+    instagram: "@p_amruth007",
+  },
+  {
+    name: "Satya Prakash",
+    role: ["Web Dev Team, GDGC"],
+    phone: "+91 9581056624",
+    photoUrl: "/developers/satya prakash.jpeg",
+    instagram: "@satyaprakash_2205",
+  },
+  {
+    name: "Vaishnavi Koppakula",
+    role: ["Design Team, GDGC"],
+    phone: "+91 9642896448",
+    photoUrl: "/developers/vaishnavi.PNG",
+    instagram: "@vaish_o.0",
+  },
+  {
+    name: "Anjali Kotha",
+    role: ["Web Dev Team, GDGC"],
+    phone: "+91 9550824115",
+    photoUrl: "/developers/anjali.jpeg",
+    instagram: "@anjali_kotha_",
+  },
+  {
+    name: "Santosh",
+    role: ["Web Dev Team, GDGC"],
+    phone: "+91 9182285342",
+    photoUrl: "/developers/santosh.jpeg",
+    instagram: "@santoshpulikonda",
+  },
 ]
 
 // const FACULTY_COORDINATORS = [
@@ -143,12 +190,16 @@ function ContactCard({
   phone,
   photoUrl,
   isFaculty,
+  isDeveloper,
+  instagram,
 }: {
   name: string
   role?: string[]
   phone: string
   photoUrl?: string
   isFaculty?: boolean
+  isDeveloper?: boolean
+  instagram?: string
 }) {
   const parts = name.split(" ")
   const initials = isFaculty
@@ -159,14 +210,15 @@ function ContactCard({
       ? parts[0][0] + parts[1][0]
       : name[0]
 
-  const passId = `${isFaculty ? "FAC" : "COORD"}-${name.replace(/[^A-Za-z]/g, "").slice(0, 4).toUpperCase()}`
+  const passPrefix = isDeveloper ? "DEV" : isFaculty ? "FAC" : "COORD"
+  const passId = `${passPrefix}-${name.replace(/[^A-Za-z]/g, "").slice(0, 4).toUpperCase()}`
 
   return (
     <div className="group relative flex flex-col items-center border-2 border-foreground/20 bg-background/95 p-5 text-center retro-shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-foreground/60 hover:retro-shadow">
       {/* Top lanyard hole / header accent */}
       <div className="mb-3 flex w-full items-center justify-between border-b border-border/80 pb-2.5">
         <span className="font-mono text-[9px] font-bold tracking-widest text-muted-foreground uppercase">
-          {isFaculty ? "FACULTY DESK" : "STUDENT OPERATIONS"}
+          {isDeveloper ? "GDGC DEV TEAM" : isFaculty ? "FACULTY DESK" : "STUDENT OPERATIONS"}
         </span>
         <div className="h-1.5 w-7 rounded-full bg-foreground/20 ring-1 ring-border" title="Lanyard clip slot" />
         <span className="font-mono text-[9px] font-bold text-red-700 tracking-wider">
@@ -175,48 +227,97 @@ function ContactCard({
       </div>
 
       {/* ID Photo box */}
-      <div className="relative mb-3 flex h-16 w-16 items-center justify-center border-2 border-foreground/30 bg-[#ddd0aa]/80 shadow-inner">
-        {photoUrl ? (
-          <Image
-            src={photoUrl}
-            alt={`${name} photo`}
-            fill
-            sizes="64px"
-            className="object-cover object-center"
-          />
-        ) : (
-          <span className="font-mono text-xl font-black tracking-tight text-foreground">
-            {initials}
+      {isDeveloper ? (
+        <div className="relative mb-3 flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center rounded-full border-2 border-foreground/30 bg-[#ddd0aa]/80 shadow-inner">
+          {photoUrl ? (
+            <div className="relative h-full w-full overflow-hidden rounded-full">
+              <Image
+                src={photoUrl}
+                alt={`${name} photo`}
+                fill
+                sizes="(max-width: 640px) 96px, 112px"
+                className="object-cover object-center"
+              />
+            </div>
+          ) : (
+            <span className="font-mono text-2xl font-black tracking-tight text-foreground">
+              {initials}
+            </span>
+          )}
+          {/* GDGC Logo badge on bottom-right corner of frame */}
+          <div
+            className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full border-2 border-foreground bg-[#ffffff] shadow-md overflow-hidden p-0.5"
+            title="Google Developer Groups on Campus • VNRVJIET"
+          >
+            <div className="relative h-full w-full">
+              <Image
+                src="/clubs/club-gdgc2.png"
+                alt="GDGC Logo"
+                fill
+                sizes="128px"
+                className="scale-[4.2] object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="relative mb-3 flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center border-2 border-foreground/30 bg-[#ddd0aa]/80 shadow-inner">
+          {photoUrl ? (
+            <Image
+              src={photoUrl}
+              alt={`${name} photo`}
+              fill
+              sizes="(max-width: 640px) 96px, 112px"
+              className="object-cover object-center"
+            />
+          ) : (
+            <span className="font-mono text-2xl font-black tracking-tight text-foreground">
+              {initials}
+            </span>
+          )}
+          <span className="pointer-events-none absolute -bottom-1 -right-1 bg-red-700 px-1.5 py-0.5 font-mono text-[8px] font-bold text-[#ede1c5]">
+            {isFaculty ? "FAC" : "LEAD"}
           </span>
-        )}
-        <span className="pointer-events-none absolute -bottom-1 -right-1 bg-red-700 px-1 py-0.2 font-mono text-[8px] font-bold text-[#ede1c5]">
-          {isFaculty ? "FAC" : "LEAD"}
-        </span>
-      </div>
+        </div>
+      )}
 
       <p className="text-sm font-bold tracking-tight text-foreground">{name}</p>
 
       {/* Role tag chips */}
-      <div className="my-2.5 flex min-h-[44px] flex-wrap justify-center gap-1.5">
+      <div className="my-2.5 flex min-h-[44px] flex-wrap items-center justify-center content-center gap-1.5">
         {role?.map((r, i) => (
           <span
             key={i}
-            className="inline-block border border-border bg-[#e2d5b0]/60 px-2 py-0.5 font-mono text-[10px] font-medium tracking-wide text-foreground/90"
+            className="inline-block h-fit border border-border bg-[#e2d5b0]/60 px-2 py-0.5 font-mono text-[10px] font-medium tracking-wide text-foreground/90 leading-tight"
           >
             {r}
           </span>
         ))}
       </div>
 
-      {/* Telephone link */}
-      <div className="mt-auto w-full border-t border-dashed border-border/80 pt-2.5">
-        <a
-          href={`tel:${phone.replace(/\s+/g, "")}`}
-          className="inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground transition-colors hover:text-red-700"
-        >
-          <span aria-hidden className="font-bold text-red-700">☎</span>
-          <span className="tracking-wider">{phone}</span>
-        </a>
+      {/* Contact links */}
+      <div className="mt-auto flex w-full flex-col items-center gap-1.5 border-t border-dashed border-border/80 pt-2.5">
+        {phone && (
+          <a
+            href={`tel:${phone.replace(/\s+/g, "")}`}
+            className="inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground transition-colors hover:text-red-700"
+          >
+            <span aria-hidden className="font-bold text-red-700">☎</span>
+            <span className="tracking-wider">{phone}</span>
+          </a>
+        )}
+
+        {isDeveloper && instagram && (
+          <a
+            href={`https://instagram.com/${instagram.replace(/^@/, "")}`}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground transition-colors hover:text-red-700"
+          >
+            <Instagram className="h-3 w-3 text-red-700" />
+            <span className="tracking-wider">{instagram.startsWith("@") ? instagram : `@${instagram}`}</span>
+          </a>
+        )}
       </div>
 
       {/* Retro barcode lines at bottom */}
@@ -304,6 +405,19 @@ export default function Page() {
       setIsCreditHovered(false)
     } else {
       setIsCreditPinned(true)
+    }
+  }
+
+  const scrollToDevelopers = (e?: React.MouseEvent | React.KeyboardEvent) => {
+    e?.preventDefault()
+    e?.stopPropagation()
+    setIsCreditPinned(false)
+    setIsCreditHovered(false)
+    const el = document.getElementById("developers")
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" })
+    } else {
+      window.location.hash = "developers"
     }
   }
 
@@ -527,17 +641,19 @@ export default function Page() {
                               {event.name}
                             </h3>
 
-                            <div className="pt-2">
-                              <a
-                                href={event.regLink}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="retro-btn flex w-full items-center justify-center gap-2 border-2 border-foreground bg-red-700 px-4 py-2 font-mono text-xs font-bold tracking-wider text-[#ede1c5] uppercase transition-colors hover:bg-red-800"
-                              >
-                                <span>Register Here</span>
-                                <span aria-hidden className="text-[10px]">▶</span>
-                              </a>
-                            </div>
+                            {event.category !== "Social" && event.regLink && event.regLink !== "SPOT" && (
+                              <div className="pt-2">
+                                <a
+                                  href={event.regLink}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="retro-btn flex w-full items-center justify-center gap-2 border-2 border-foreground bg-red-700 px-4 py-2 font-mono text-xs font-bold tracking-wider text-[#ede1c5] uppercase transition-colors hover:bg-red-800"
+                                >
+                                  <span>Register Here</span>
+                                  <span aria-hidden className="text-[10px]">▶</span>
+                                </a>
+                              </div>
+                            )}
                           </div>
                         </div>
                       ))}
@@ -657,7 +773,7 @@ export default function Page() {
         </section>
 
         {/* THEMES SECTION */}
-        <section id="themes" className="relative border-b-2 border-foreground/15 py-20">
+        <section id="themes" className="relative border-b-2 border-foreground/15 py-20 scroll-mt-16 md:scroll-mt-20">
           <div className="mx-auto max-w-6xl px-6">
             <div className="mb-2 flex items-center justify-center gap-2 font-mono text-xs font-bold tracking-widest text-red-700 uppercase">
               <span>[ ARCHIVE // 08 CURATED TRACKS ]</span>
@@ -714,7 +830,7 @@ export default function Page() {
         </section>
 
         {/* ORGANISED BY / CLUBS SECTION */}
-        <section id="clubs" className="relative border-b-2 border-foreground/15 py-20">
+        <section id="clubs" className="relative border-b-2 border-foreground/15 py-20 scroll-mt-16 md:scroll-mt-20">
           <div className="mx-auto max-w-6xl px-6 text-center">
             <div className="mb-2 flex items-center justify-center gap-2 font-mono text-xs font-bold tracking-widest text-red-700 uppercase">
               <span>[ COMMUNITY ALLIANCE // 55 CHAPTERS ]</span>
@@ -753,7 +869,7 @@ export default function Page() {
         </section>
 
         {/* COORDINATORS & CONTACT SECTION */}
-        <section id="contact" className="relative border-b-2 border-foreground/15 py-20">
+        <section id="contact" className="relative border-b-2 border-foreground/15 py-20 scroll-mt-16 md:scroll-mt-20">
           <div className="mx-auto max-w-6xl space-y-16 px-6">
             <div>
               <div className="mb-2 flex items-center justify-center gap-2 font-mono text-xs font-bold tracking-widest text-red-700 uppercase">
@@ -782,9 +898,42 @@ export default function Page() {
               <p className="mb-8 text-center font-mono text-xs text-muted-foreground">
                 Get in direct touch with student leads for immediate assistance.
               </p>
-              <div className="grid gap-6 sm:grid-cols-3">
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 {EVENT_COORDINATORS.map((person, i) => (
                   <ContactCard key={i} {...person} />
+                ))}
+              </div>
+            </div>
+
+            {/* DEVELOPERS SECTION */}
+            <div id="developers" className="border-t-2 border-dashed border-border/80 pt-16 scroll-mt-20 md:scroll-mt-24">
+              <div className="mb-2 flex items-center justify-center gap-2 font-mono text-xs font-bold tracking-widest text-red-700 uppercase">
+                <span>[ TERMINAL // CORE DEVELOPERS ]</span>
+              </div>
+              <h2 className="mb-2 text-center text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                Development Team
+              </h2>
+              <div className="mb-3 flex items-center justify-center gap-2 font-mono text-xs text-muted-foreground">
+                <span>Engineered with passion by</span>
+                <span className="inline-flex items-center gap-1.5 font-bold text-foreground">
+                  <span className="relative inline-block h-4 w-4 overflow-hidden rounded-full">
+                    <Image
+                      src="/clubs/club-gdgc2.png"
+                      alt="GDGC"
+                      fill
+                      className="scale-[1.6] object-contain"
+                    />
+                  </span>
+                  Google Developer Groups on Campus
+                </span>
+                <span className="hidden sm:inline">• VNRVJIET</span>
+              </div>
+              <p className="mb-8 text-center font-mono text-[11px] text-muted-foreground">
+                The minds and hands behind the Convergence 2K26 digital platform.
+              </p>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {DEVELOPERS.map((person, i) => (
+                  <ContactCard key={i} {...person} isDeveloper={true} />
                 ))}
               </div>
             </div>
@@ -881,7 +1030,16 @@ export default function Page() {
               animate={{ opacity: 1, x: 0, scale: 1 }}
               exit={{ opacity: 0, x: 16, scale: 0.94 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="absolute bottom-1 right-16 w-max max-w-[calc(100vw-7rem)] border-2 border-foreground bg-background p-3 font-mono text-xs retro-shadow"
+              role="button"
+              tabIndex={0}
+              onClick={scrollToDevelopers}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  scrollToDevelopers(e)
+                }
+              }}
+              title="Click to view Development Team"
+              className="group absolute bottom-1 right-16 w-max max-w-[calc(100vw-7rem)] cursor-pointer border-2 border-foreground bg-background p-3 font-mono text-xs retro-shadow transition-all duration-150 hover:-translate-y-0.5 hover:border-red-700 select-none"
             >
               <div className="mb-1.5 flex items-center justify-between border-b border-border pb-1 font-mono text-[10px] font-bold text-red-700 tracking-wider uppercase">
                 <div className="flex items-center gap-1.5">
@@ -901,14 +1059,30 @@ export default function Page() {
                   [✕]
                 </button>
               </div>
-              <p className="font-bold text-foreground">Developed by GDGC Web Dev Team</p>
-              <p className="mt-0.5 text-[10px] text-muted-foreground">Google Developer Groups on Campus • VNRVJIET</p>
+              <p className="font-bold text-foreground transition-colors group-hover:text-red-700">
+                Developed by GDGC Web Dev Team
+              </p>
+              <p className="mt-0.5 text-[10px] text-muted-foreground">
+                Google Developer Groups on Campus • VNRVJIET
+              </p>
+
+              {/* Intuitive Call-to-Action */}
+              <div className="mt-2.5 flex items-center justify-between rounded border border-red-700/30 bg-red-700/10 px-2 py-1 font-mono text-[10px] font-bold text-red-700 transition-colors group-hover:bg-red-700 group-hover:text-[#ede1c5]">
+                <span className="flex items-center gap-1.5">
+                  <span className="inline-block animate-pulse">▶</span>
+                  <span>MEET THE TEAM</span>
+                </span>
+                <span className="font-bold transition-transform duration-200 group-hover:translate-x-1">
+                  →
+                </span>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
         <motion.button
           type="button"
           aria-label="Toggle development credit"
+          title="Developer credits"
           aria-expanded={isCreditOpen}
           suppressHydrationWarning
           onClick={toggleCredit}
@@ -931,4 +1105,3 @@ export default function Page() {
     </div>
   )
 }
-
