@@ -76,17 +76,17 @@ const THEME_ITEMS = [
 // ]
 
 const FACULTY_COORDINATORS = [
-  { name: "Dr. D. Srinivasa Rao", role: ["Sponsorship & Finance", "Web & IT", "Hospitality & Guest Relations"], phone: "+91 9966232722" },
-  { name: "Dr. Y. Chalapathi Rao", role: ["Event Management & Coordination", "Registration & Help Desk"], phone: "+91 9491127967" },
-  { name: "Mrs. E. Lalitha", role: ["PR & Outreach", "Social Media & Content", "Photography & Videography"], phone: "+91 9014355042" },
-  { name: "Dr. S. Sangeetha", role: ["Sponsorship & Finance", "Logistics & Operations"], phone: "+91 9849575415" },
-  { name: "Dr. O. Sobhana", role: ["Design & Creatives", "Social Media & Content", "Documentation"], phone: "+91 9441169927" },
+  { name: "Dr. D. Srinivasa Rao", role: ["Sponsorship & Finance", "Web & IT", "Hospitality & Guest Relations"], phone: "+91 9966232722", photoUrl: "/coordinators/srinivasa%20rao.jpeg" },
+  { name: "Dr. Y. Chalapathi Rao", role: ["Event Management & Coordination", "Registration & Help Desk"], phone: "+91 9491127967", photoUrl: "/coordinators/chalapatirao.jpeg" },
+  { name: "Mrs. E. Lalitha", role: ["PR & Outreach", "Social Media & Content", "Photography & Videography"], phone: "+91 9014355042", photoUrl: "/coordinators/lalitha.jpeg" },
+  { name: "Dr. S. Sangeetha", role: ["Sponsorship & Finance", "Logistics & Operations"], phone: "+91 9849575415", photoUrl: "/coordinators/sangeetha.jpeg" },
+  { name: "Dr. O. Sobhana", role: ["Design & Creatives", "Social Media & Content", "Documentation"], phone: "+91 9441169927", photoUrl: "/coordinators/sobhana.jpeg" },
 ]
 
 const EVENT_COORDINATORS = [
-  { name: "Srikar Burgula", role: ["Events Coordinator"], phone: "+91 8328292124" },
-  { name: "P Maheshwar", role: ["Web & IT Coordinator"], phone: "+91 9515871625" },
-  { name: "E. V. Gaurav", role: ["Registrations & Help Desk Coordinator"], phone: "+91 8179590621" },
+  { name: "Srikar Burgula", role: ["Events Coordinator"], phone: "+91 8328292124", photoUrl: "/coordinators/srikar.jpeg" },
+  { name: "P Maheshwar", role: ["Web & IT Coordinator"], phone: "+91 9515871625", photoUrl: "/coordinators/mahesh.jpeg" },
+  { name: "E. V. Gaurav", role: ["Registrations & Help Desk Coordinator"], phone: "+91 8179590621", photoUrl: "/coordinators/gaurav.jpeg" },
 ]
 
 // const FACULTY_COORDINATORS = [
@@ -160,11 +160,13 @@ function ContactCard({
   name,
   role,
   phone,
+  photoUrl,
   isFaculty,
 }: {
   name: string
   role?: string[]
   phone: string
+  photoUrl?: string
   isFaculty?: boolean
 }) {
   const parts = name.split(" ")
@@ -193,9 +195,19 @@ function ContactCard({
 
       {/* ID Photo box */}
       <div className="relative mb-3 flex h-16 w-16 items-center justify-center border-2 border-foreground/30 bg-[#ddd0aa]/80 shadow-inner">
-        <span className="font-mono text-xl font-black tracking-tight text-foreground">
-          {initials}
-        </span>
+        {photoUrl ? (
+          <Image
+            src={photoUrl}
+            alt={`${name} photo`}
+            fill
+            sizes="64px"
+            className="object-cover object-center"
+          />
+        ) : (
+          <span className="font-mono text-xl font-black tracking-tight text-foreground">
+            {initials}
+          </span>
+        )}
         <span className="pointer-events-none absolute -bottom-1 -right-1 bg-red-700 px-1 py-0.2 font-mono text-[8px] font-bold text-[#ede1c5]">
           {isFaculty ? "FAC" : "LEAD"}
         </span>
