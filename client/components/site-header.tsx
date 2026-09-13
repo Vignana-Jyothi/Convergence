@@ -7,7 +7,7 @@ const NAV_ITEMS = [
   { label: "Home", href: "#home" },
   { label: "Events", href: "#events" },
   { label: "Themes", href: "#themes" },
-  { label: "Organised By", href: "#clubs" },
+  { label: "Organisers", href: "#clubs" },
   { label: "Contact", href: "#contact" },
   { label: "Developers", href: "#developers" },
 ]

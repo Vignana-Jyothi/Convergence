@@ -1,40 +1,16 @@
 "use client"
 
-import { useEffect, useRef, useCallback } from "react"
+import { useEffect, useRef } from "react"
 
 /**
  * Custom retro 3D-pixel cursor using /cursor.png.
- * Uses mix-blend-mode to handle the white background in the image.
- * Swaps hue on dark backgrounds for visibility.
  * pointer-events is ALWAYS "none" so clicks/drags pass through.
  */
 export default function CustomCursor() {
   const wrapRef = useRef<HTMLDivElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
-  const variant = useRef<"default" | "light">("default")
   const raf = useRef(0)
   const pos = useRef({ x: -100, y: -100 })
-
-  const isDark = useCallback((el: Element): boolean => {
-    const bg = getComputedStyle(el).backgroundColor
-    const m = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/)
-    if (!m) return false
-    return (0.299 * +m[1] + 0.587 * +m[2] + 0.114 * +m[3]) / 255 < 0.4
-  }, [])
-
-  const checkBg = useCallback(
-    (el: Element | null): boolean => {
-      while (el && el !== document.documentElement) {
-        const bg = getComputedStyle(el).backgroundColor
-        if (bg && bg !== "rgba(0, 0, 0, 0)" && bg !== "transparent") {
-          return isDark(el)
-        }
-        el = el.parentElement
-      }
-      return false
-    },
-    [isDark]
-  )
 
   useEffect(() => {
     if ("ontouchstart" in window || navigator.maxTouchPoints > 0) return
@@ -47,22 +23,6 @@ export default function CustomCursor() {
       if (!raf.current) {
         raf.current = requestAnimationFrame(() => {
           wrap.style.transform = `translate(${pos.current.x}px, ${pos.current.y}px)`
-
-          const els = document.elementsFromPoint(pos.current.x, pos.current.y)
-          const target = els.find((el) => !wrap.contains(el))
-          if (target) {
-            const dark = checkBg(target)
-            const next = dark ? "light" : "default"
-            if (next !== variant.current) {
-              variant.current = next
-              if (imgRef.current) {
-                // On dark backgrounds, brighten the cursor to maintain visibility
-                imgRef.current.style.filter = dark
-                  ? "brightness(1.5) drop-shadow(0 0 4px rgba(255,255,255,0.4))"
-                  : "drop-shadow(2px 2px 2px rgba(0,0,0,0.3))"
-              }
-            }
-          }
           raf.current = 0
         })
       }
@@ -81,7 +41,7 @@ export default function CustomCursor() {
       document.removeEventListener("mouseleave", leave)
       if (raf.current) cancelAnimationFrame(raf.current)
     }
-  }, [checkBg])
+  }, [])
 
   return (
     <div

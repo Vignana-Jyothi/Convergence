@@ -821,7 +821,7 @@ export default function Page() {
               <span>[ COMMUNITY ALLIANCE // 55 CHAPTERS ]</span>
             </div>
             <h2 className="mb-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              Organised By
+              Organisers
             </h2>
             <p className="mx-auto mb-10 max-w-xl font-mono text-xs text-muted-foreground">
               Convergence 2K26 is brought to you by 55 student clubs and technical societies working together to create an unforgettable experience
