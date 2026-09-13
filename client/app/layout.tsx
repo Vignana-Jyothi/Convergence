@@ -6,6 +6,7 @@ import "@/components/PillNav.css"
 import "@/components/CircularGallery.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
+import CustomCursor from "@/components/CustomCursor";
 
 const geistMonoHeading = Geist_Mono({subsets:['latin'],variable:'--font-heading'});
 
@@ -49,6 +50,7 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning>
+        <CustomCursor />
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
