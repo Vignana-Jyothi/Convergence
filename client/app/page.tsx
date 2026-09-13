@@ -66,9 +66,9 @@ const FACULTY_COORDINATORS = [
 
 const EVENT_COORDINATORS = [
   { name: "P Maheshwar", role: ["Web & IT Coordinator"], phone: "+91 9515871625", photoUrl: "/coordinators/mahesh.jpeg" },
-  { name: "E. V. Gaurav", role: ["Registrations & Help Desk Coordinator"], phone: "+91 8179590621", photoUrl: "/coordinators/gaurav.jpeg" },
-  { name: "Sarvani Divakarla", role: ["Web & IT Coordinator"], phone: "+91 6302944144", photoUrl: "/coordinators/sarvani divakarla.jpeg" },
-  { name: "Naga Sresht", role: ["Web & IT Coordinator"], phone: "+91 8978531856", photoUrl: "/coordinators/naga sresht.jpeg" },
+  { name: "E. V. Gaurav", role: ["Registrations & Help Desk Coordinator"], phone: "+91 8179590621", photoUrl: "/coordinators/gaurav.jpeg", photoUrl: "/coordinators/srikar.jpeg" },
+  { name: "Sarvani Divakarla", role: ["Web & IT Coordinator"], phone: "+91 6302944144", photoUrl: "/coordinators/sarvani divakarla.jpeg", photoUrl: "/coordinators/mahesh.jpeg" },
+  { name: "Naga Sresht", role: ["Web & IT Coordinator"], phone: "+91 8978531856", photoUrl: "/coordinators/naga sresht.jpeg", photoUrl: "/coordinators/gaurav.jpeg" },
 ]
 
 // const FACULTY_COORDINATORS = [
