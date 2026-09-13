@@ -480,7 +480,7 @@ export const EVENTS: Event[] = [
 		id: "wing-builders",
 		name: "Wing Builders",
 		category: "Technical",
-		posterUrl: "/events/wing builders.jpeg",
+		posterUrl: "/events/wing-builders.jpeg",
 		regLink: "https://aspireup.ai/organization/asme-vnrvjiet/event/100166",
 	},
 ]
