@@ -241,6 +241,13 @@ export const EVENTS: Event[] = [
 		regLink: "SPOT",
 	},
 	{
+		id: "diksuchi-2k26",
+		name: "Diksuchi 2k26",
+		category: "Social",
+		posterUrl: "/events/Diksuchi 2k26 - PACHIPALA LOHITH.PNG",
+		regLink: "SPOT",
+	},
+	{
 		id: "embedded-workshop",
 		name: "Embedded Workshop",
 		category: "Workshops",
@@ -538,6 +545,34 @@ export const EVENTS: Event[] = [
 		category: "Technical",
 		posterUrl: "/events/Warzone 4.0.png",
 		regLink: "https://aspireup.ai/organization/vj-garuda-vigilance/event/100158",
+	},
+	{
+		id: "gears-and-greases",
+		name: "Gears and Greases",
+		category: "Technical",
+		posterUrl: "/events/gears-and-greases.jpeg",
+		regLink: "https://aspireup.ai/organization/asme-vnrvjiet/event/100165",
+	},
+	{
+		id: "m-cadathon",
+		name: "M-Cadathon",
+		category: "Technical",
+		posterUrl: "/events/m-cadathon.jpeg",
+		regLink: "https://aspireup.ai/organization/asme-vnrvjiet/event/100164",
+	},
+	{
+		id: "saaradhi",
+		name: "Saaradhi",
+		category: "Social",
+		posterUrl: "/events/saradhi.png",
+		regLink: "SPOT",
+	},
+	{
+		id: "wing-builders",
+		name: "Wing Builders",
+		category: "Technical",
+		posterUrl: "/events/wing builders.jpeg",
+		regLink: "https://aspireup.ai/organization/asme-vnrvjiet/event/100166",
 	},
 ]
 
