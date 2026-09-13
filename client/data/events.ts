@@ -266,13 +266,13 @@ export const EVENTS: Event[] = [
 		posterUrl: "/events/Metapool - XploR-XR VNRVJIET.png",
 		regLink: "https://aspireup.ai/organization/xplor-xr/event/100131",
 	},
-	// {
-	// 	id: "project-contest",
-	// 	name: "Project Contest",
-	// 	category: "Technical",
-	// 	posterUrl: "/events/Project Contest - AKSHAYA SRIJA RUDRABHATLA.png",
-	// 	regLink: "",
-	// },
+	{
+		id: "project-contest",
+		name: "Project Contest",
+		category: "Technical",
+		posterUrl: "/events/Project Contest - AKSHAYA SRIJA RUDRABHATLA.png",
+		regLink: "https://unstop.com/o/XkUBE4i?lb=SI2ZYLII&utm_medium=Share&utm_source=asri9484&utm_campaign=Competitions",
+	},
 	{
 		id: "rc-maze",
 		name: "RC Maze",
@@ -329,13 +329,13 @@ export const EVENTS: Event[] = [
 		posterUrl: "/events/cursed chamber.png",
 		regLink: "https://aspireup.ai/organization/ietevnrvjiet/event/100157",
 	},
-	// {
-	// 	id: "hardware-hackathon",
-	// 	name: "Hardware Hackathon",
-	// 	category: "Hackathon",
-	// 	posterUrl: "/events/hardware hackathon.png",
-	// 	regLink: "",
-	// },
+	{
+		id: "hardware-hackathon",
+		name: "Hardware Hackathon",
+		category: "Hackathon",
+		posterUrl: "/events/hardware hackathon.png",
+		regLink: "https://unstop.com/hackathons/convergence-2k26-24hr-hardware-hackathon-vallurupalli-nageswara-rao-vignana-jyothi-institute-of-engineering-t-1750727",
+	},
 	{
 		id: "matlab-casino",
 		name: "MATLAB Casino",
@@ -426,6 +426,34 @@ export const EVENTS: Event[] = [
 		category: "Technical",
 		posterUrl: "/events/telescope workshop.png",
 		regLink: "https://aspireup.ai/organization/kaksya-sastra-vnrvjiet/event/100186",
+	},
+	{
+		id: "speak-to-lead",
+		name: "Speak to Lead",
+		category: "Cultural",
+		posterUrl: "/events/speak to lead.jpeg",
+		regLink: "https://docs.google.com/forms/d/e/1FAIpQLSeh0L1z8AON91l2gtqYO4taV2pZfQVeo4Fcr7ZtE1UEHXKRqg/viewform?pli=1",
+	},
+	{
+		id: "venture-conclave",
+		name: "Venture Conclave",
+		category: "Technical",
+		posterUrl: "/events/venture conclave.png",
+		regLink: "https://aspireup.ai/organization/vj-startups/event/100188",
+	},
+	{
+		id: "project-k",
+		name: "Project K",
+		category: "Cultural",
+		posterUrl: "/events/project-4.png",
+		regLink: "https://aspireup.ai/organization/yuwazen/event/100175",
+	},
+	{
+		id: "warzone-4.0",
+		name: "Warzone 4.0",
+		category: "Technical",
+		posterUrl: "/events/Warzone 4.0.png",
+		regLink: "https://aspireup.ai/organization/vj-garuda-vigilance/event/100158",
 	},
 ]
 

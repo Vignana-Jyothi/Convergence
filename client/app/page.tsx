@@ -527,7 +527,7 @@ export default function Page() {
                                 rel="noreferrer"
                                 className="retro-btn flex w-full items-center justify-center gap-2 border-2 border-foreground bg-red-700 px-4 py-2 font-mono text-xs font-bold tracking-wider text-[#ede1c5] uppercase transition-colors hover:bg-red-800"
                               >
-                                <span>Register on Aspireup</span>
+                                <span>Register Here</span>
                                 <span aria-hidden className="text-[10px]">▶</span>
                               </a>
                             </div>
