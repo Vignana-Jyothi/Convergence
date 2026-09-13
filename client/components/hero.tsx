@@ -91,7 +91,7 @@ function BottomBar() {
       <Button
         size="lg"
         onClick={() => {
-          window.location.href = REGISTRATION_URL
+          window.open(REGISTRATION_URL, '_blank', 'noopener,noreferrer')
         }}
         className="h-auto gap-2 bg-red-700 px-6 py-3 text-xs font-bold tracking-[0.15em] uppercase hover:bg-red-800 sm:text-sm"
         style={{ color: PAPER }}
