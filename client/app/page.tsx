@@ -17,7 +17,7 @@ const CircularGallery = dynamic(() => import("@/components/CircularGallery"), {
   ssr: false,
 })
 
-const EVENT_CATEGORIES = ["All", "Technical", "Workshops", "Gaming", "Cultural", "Sports", "Hackathon"]
+const EVENT_CATEGORIES = ["All", "Technical", "Workshops", "Gaming", "Social", "Cultural", "Sports", "Hackathon"]
 
 const EVENTS_PER_PAGE = 8
 
@@ -56,25 +56,6 @@ const THEME_ITEMS = [
   { image: "/themes/tech-for-social-good.png", text: "Tech for Social Good" },
 ]
 
-// const FACULTY_COORDINATORS = [
-//   { name: "[Name]", role: "[Department]", phone: "[Phone number]" },
-//   { name: "[Name]", role: "[Department]", phone: "[Phone number]" },
-//   { name: "[Name]", role: "[Department]", phone: "[Phone number]" },
-// Dr. Y. Chalapathi Rao – Event Management & Coordination
-// Mrs. E. Lalitha – PR & Outreach
-// Dr. S. Sangeetha – Sponsorship & Finance
-// Dr. D. Srinivasa Rao – Sponsorship & Finance
-// Dr. Y. Chalapathi Rao – Registration & Help Desk
-// Dr. O. Sobhana – Design & Creatives
-// Dr. O. Sobhana – Social Media & Content
-// Mrs. E. Lalitha – Social Media & Content
-// Dr. D. Srinivasa Rao – Web & IT
-// Dr. S. Sangeetha – Logistics & Operations
-// Mrs. E. Lalitha – Photography & Videography
-// Dr. D. Srinivasa Rao – Hospitality & Guest Relations
-// Dr. O. Sobhana – Documentation
-// ]
-
 const FACULTY_COORDINATORS = [
   { name: "Dr. D. Srinivasa Rao", role: ["Sponsorship & Finance", "Web & IT", "Hospitality & Guest Relations"], phone: "+91 9966232722", photoUrl: "/coordinators/srinivasa%20rao.jpeg" },
   { name: "Dr. Y. Chalapathi Rao", role: ["Event Management & Coordination", "Registration & Help Desk"], phone: "+91 9491127967", photoUrl: "/coordinators/chalapatirao.jpeg" },
@@ -84,9 +65,10 @@ const FACULTY_COORDINATORS = [
 ]
 
 const EVENT_COORDINATORS = [
-  { name: "Srikar Burgula", role: ["Events Coordinator"], phone: "+91 8328292124", photoUrl: "/coordinators/srikar.jpeg" },
   { name: "P Maheshwar", role: ["Web & IT Coordinator"], phone: "+91 9515871625", photoUrl: "/coordinators/mahesh.jpeg" },
   { name: "E. V. Gaurav", role: ["Registrations & Help Desk Coordinator"], phone: "+91 8179590621", photoUrl: "/coordinators/gaurav.jpeg" },
+  { name: "Sarvani Divakarla", role: ["Web & IT Coordinator"], phone: "+91 6302944144", photoUrl: "/coordinators/sarvani divakarla.jpeg" },
+  { name: "Naga Sresht", role: ["Web & IT Coordinator"], phone: "+91 8978531856", photoUrl: "/coordinators/naga sresht.jpeg" },
 ]
 
 // const FACULTY_COORDINATORS = [
@@ -532,17 +514,19 @@ export default function Page() {
                               {event.name}
                             </h3>
 
-                            <div className="pt-2">
-                              <a
-                                href={event.regLink}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="retro-btn flex w-full items-center justify-center gap-2 border-2 border-foreground bg-red-700 px-4 py-2 font-mono text-xs font-bold tracking-wider text-[#ede1c5] uppercase transition-colors hover:bg-red-800"
-                              >
-                                <span>Register Here</span>
-                                <span aria-hidden className="text-[10px]">▶</span>
-                              </a>
-                            </div>
+                            {event.category !== "Social" && event.regLink && event.regLink !== "SPOT" && (
+                              <div className="pt-2">
+                                <a
+                                  href={event.regLink}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="retro-btn flex w-full items-center justify-center gap-2 border-2 border-foreground bg-red-700 px-4 py-2 font-mono text-xs font-bold tracking-wider text-[#ede1c5] uppercase transition-colors hover:bg-red-800"
+                                >
+                                  <span>Register Here</span>
+                                  <span aria-hidden className="text-[10px]">▶</span>
+                                </a>
+                              </div>
+                            )}
                           </div>
                         </div>
                       ))}
@@ -573,11 +557,10 @@ export default function Page() {
                             type="button"
                             onClick={() => handlePageChange(currentPage - 1)}
                             disabled={currentPage === 1}
-                            className={`retro-btn flex h-8 items-center gap-1 border-2 border-foreground px-3 font-mono text-xs font-bold uppercase transition-all ${
-                              currentPage === 1
-                                ? "opacity-35 cursor-not-allowed bg-background/50 text-muted-foreground border-foreground/30"
-                                : "bg-background text-foreground hover:bg-foreground hover:text-background"
-                            }`}
+                            className={`retro-btn flex h-8 items-center gap-1 border-2 border-foreground px-3 font-mono text-xs font-bold uppercase transition-all ${currentPage === 1
+                              ? "opacity-35 cursor-not-allowed bg-background/50 text-muted-foreground border-foreground/30"
+                              : "bg-background text-foreground hover:bg-foreground hover:text-background"
+                              }`}
                             aria-label="Previous page"
                           >
                             <span aria-hidden>◀</span>
@@ -607,11 +590,10 @@ export default function Page() {
                                 onClick={() => handlePageChange(pageNum)}
                                 aria-current={isCurrent ? "page" : undefined}
                                 aria-label={`Page ${pageNum}`}
-                                className={`retro-btn flex h-8 min-w-[34px] items-center justify-center border-2 px-2.5 font-mono text-xs font-bold transition-all ${
-                                  isCurrent
-                                    ? "border-foreground bg-red-700 text-[#ede1c5] retro-shadow-sm font-black scale-105"
-                                    : "border-border/90 bg-background/80 text-foreground hover:border-foreground hover:bg-foreground hover:text-background"
-                                }`}
+                                className={`retro-btn flex h-8 min-w-[34px] items-center justify-center border-2 px-2.5 font-mono text-xs font-bold transition-all ${isCurrent
+                                  ? "border-foreground bg-red-700 text-[#ede1c5] retro-shadow-sm font-black scale-105"
+                                  : "border-border/90 bg-background/80 text-foreground hover:border-foreground hover:bg-foreground hover:text-background"
+                                  }`}
                               >
                                 {String(pageNum).padStart(2, "0")}
                               </button>
@@ -623,11 +605,10 @@ export default function Page() {
                             type="button"
                             onClick={() => handlePageChange(currentPage + 1)}
                             disabled={currentPage === totalPages}
-                            className={`retro-btn flex h-8 items-center gap-1 border-2 border-foreground px-3 font-mono text-xs font-bold uppercase transition-all ${
-                              currentPage === totalPages
-                                ? "opacity-35 cursor-not-allowed bg-background/50 text-muted-foreground border-foreground/30"
-                                : "bg-background text-foreground hover:bg-foreground hover:text-background"
-                            }`}
+                            className={`retro-btn flex h-8 items-center gap-1 border-2 border-foreground px-3 font-mono text-xs font-bold uppercase transition-all ${currentPage === totalPages
+                              ? "opacity-35 cursor-not-allowed bg-background/50 text-muted-foreground border-foreground/30"
+                              : "bg-background text-foreground hover:bg-foreground hover:text-background"
+                              }`}
                             aria-label="Next page"
                           >
                             <span className="hidden sm:inline">NEXT</span>
