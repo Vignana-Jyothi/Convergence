@@ -492,15 +492,29 @@ export default function Page() {
                             </span>
                           </div>
 
-                          {/* Event poster */}
+                          {/* Event poster or custom event labels */}
                           <div className="relative aspect-video w-full overflow-hidden border border-foreground/20 bg-black/5">
-                            <Image
-                              src={event.posterUrl}
-                              alt={event.name}
-                              fill
-                              className="object-cover transition-transform duration-300 group-hover:scale-105"
-                              sizes="(max-width: 640px) 100vw, 33vw"
-                            />
+                            {event.type === "custom" ? (
+                              <div className="flex h-full flex-col justify-center gap-2 p-3">
+                                {event.subItems?.map((item) => (
+                                  <div
+                                    key={item}
+                                    className={`border border-border bg-background/70 px-3 py-2 font-mono text-xs text-muted-foreground ${event.subItems?.length === 1 ? "mx-auto w-fit" : "w-full"
+                                      }`}
+                                  >
+                                    {item}
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              <Image
+                                src={event.posterUrl ?? ""}
+                                alt={event.name}
+                                fill
+                                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                sizes="(max-width: 640px) 100vw, 33vw"
+                              />
+                            )}
                           </div>
 
                           {/* Perforated ticket divider */}

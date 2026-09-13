@@ -2,8 +2,10 @@ export type Event = {
 	id: string
 	name: string
 	category: string
-	posterUrl: string
-	regLink: string
+	type?: "standard" | "custom"
+	posterUrl?: string
+	regLink?: string
+	subItems?: string[]
 }
 
 export const EVENTS: Event[] = [
@@ -239,6 +241,13 @@ export const EVENTS: Event[] = [
 		regLink: "SPOT",
 	},
 	{
+		id: "diksuchi-2k26",
+		name: "Diksuchi 2k26",
+		category: "Social",
+		posterUrl: "/events/Diksuchi 2k26 - PACHIPALA LOHITH.PNG",
+		regLink: "SPOT",
+	},
+	{
 		id: "embedded-workshop",
 		name: "Embedded Workshop",
 		category: "Workshops",
@@ -265,6 +274,13 @@ export const EVENTS: Event[] = [
 		category: "Technical",
 		posterUrl: "/events/Metapool - XploR-XR VNRVJIET.png",
 		regLink: "https://aspireup.ai/organization/xplor-xr/event/100131",
+	},
+	{
+		id: "project-contest",
+		name: "Project Contest",
+		category: "Technical",
+		posterUrl: "/events/Project Contest - AKSHAYA SRIJA RUDRABHATLA.png",
+		regLink: "https://unstop.com/o/XkUBE4i?lb=SI2ZYLII&utm_medium=Share&utm_source=asri9484&utm_campaign=Competitions",
 	},
 	{
 		id: "project-contest",
@@ -481,6 +497,137 @@ export const EVENTS: Event[] = [
 		name: "Wing Builders",
 		category: "Technical",
 		posterUrl: "/events/wing-builders.jpeg",
+		regLink: "https://aspireup.ai/organization/asme-vnrvjiet/event/100166",
+	},
+	{
+		id: "speak-to-lead",
+		name: "Speak to Lead",
+		category: "Cultural",
+		posterUrl: "/events/speak to lead.jpeg",
+		regLink: "https://docs.google.com/forms/d/e/1FAIpQLSeh0L1z8AON91l2gtqYO4taV2pZfQVeo4Fcr7ZtE1UEHXKRqg/viewform?pli=1",
+	},
+	{
+		id: "venture-conclave",
+		name: "Venture Conclave",
+		category: "Technical",
+		posterUrl: "/events/venture conclave.png",
+		regLink: "https://aspireup.ai/organization/vj-startups/event/100188",
+	},
+	{
+		id: "project-k",
+		name: "Project K",
+		category: "Cultural",
+		posterUrl: "/events/project-4.png",
+		regLink: "https://aspireup.ai/organization/yuwazen/event/100175",
+	},
+	{
+		id: "warzone-4.0",
+		name: "Warzone 4.0",
+		category: "Technical",
+		posterUrl: "/events/Warzone 4.0.png",
+		regLink: "https://aspireup.ai/organization/vj-garuda-vigilance/event/100158",
+	},
+	{
+		id: "gears-and-greases",
+		name: "Gears and Greases",
+		category: "Technical",
+		posterUrl: "/events/gears-and-greases.jpeg",
+		regLink: "https://aspireup.ai/organization/asme-vnrvjiet/event/100165",
+	},
+	{
+		id: "m-cadathon",
+		name: "M-Cadathon",
+		category: "Technical",
+		posterUrl: "/events/m-cadathon.jpeg",
+		regLink: "https://aspireup.ai/organization/asme-vnrvjiet/event/100164",
+	},
+	{
+		id: "saaradhi",
+		name: "Saaradhi",
+		category: "Social",
+		posterUrl: "/events/saradhi.png",
+		regLink: "SPOT",
+	},
+	{
+		id: "wing-builders",
+		name: "Wing Builders",
+		category: "Technical",
+		posterUrl: "/events/wing builders.jpeg",
+		regLink: "https://aspireup.ai/organization/asme-vnrvjiet/event/100166",
+	},
+	{
+		id: "nss",
+		name: "NSS",
+		category: "Social",
+		type: "custom",
+		subItems: [
+			"NSS Gallery",
+			"NSS - Will you be my teacher",
+			"NSS - Parsheelan",
+			"NSS - Avishkar",
+		],
+	},
+	{
+		id: "monster",
+		name: "Monster",
+		category: "Social",
+		type: "custom",
+		subItems: ["Monster"],
+	},
+	{
+		id: "speak-to-lead",
+		name: "Speak to Lead",
+		category: "Cultural",
+		posterUrl: "/events/speak to lead.jpeg",
+		regLink: "https://docs.google.com/forms/d/e/1FAIpQLSeh0L1z8AON91l2gtqYO4taV2pZfQVeo4Fcr7ZtE1UEHXKRqg/viewform?pli=1",
+	},
+	{
+		id: "venture-conclave",
+		name: "Venture Conclave",
+		category: "Technical",
+		posterUrl: "/events/venture conclave.png",
+		regLink: "https://aspireup.ai/organization/vj-startups/event/100188",
+	},
+	{
+		id: "project-k",
+		name: "Project K",
+		category: "Cultural",
+		posterUrl: "/events/project-4.png",
+		regLink: "https://aspireup.ai/organization/yuwazen/event/100175",
+	},
+	{
+		id: "warzone-4.0",
+		name: "Warzone 4.0",
+		category: "Technical",
+		posterUrl: "/events/Warzone 4.0.png",
+		regLink: "https://aspireup.ai/organization/vj-garuda-vigilance/event/100158",
+	},
+	{
+		id: "gears-and-greases",
+		name: "Gears and Greases",
+		category: "Technical",
+		posterUrl: "/events/gears-and-greases.jpeg",
+		regLink: "https://aspireup.ai/organization/asme-vnrvjiet/event/100165",
+	},
+	{
+		id: "m-cadathon",
+		name: "M-Cadathon",
+		category: "Technical",
+		posterUrl: "/events/m-cadathon.jpeg",
+		regLink: "https://aspireup.ai/organization/asme-vnrvjiet/event/100164",
+	},
+	{
+		id: "saaradhi",
+		name: "Saaradhi",
+		category: "Social",
+		posterUrl: "/events/saradhi.png",
+		regLink: "SPOT",
+	},
+	{
+		id: "wing-builders",
+		name: "Wing Builders",
+		category: "Technical",
+		posterUrl: "/events/wing builders.jpeg",
 		regLink: "https://aspireup.ai/organization/asme-vnrvjiet/event/100166",
 	},
 ]
