@@ -236,11 +236,11 @@ function ContactCard({
           >
             <div className="relative h-full w-full">
               <Image
-                src="/clubs/club-gdgc2.png"
+                src="/club-gdgc2.png"
                 alt="GDGC Logo"
                 fill
                 sizes="128px"
-                className="scale-[4.2] object-contain"
+                className="scale-[5] object-contain"
               />
             </div>
           </div>
@@ -648,19 +648,8 @@ export default function Page() {
                     {totalPages > 1 && (
                       <nav
                         aria-label="Events pagination"
-                        className="mt-8 flex flex-col items-center justify-between gap-4 border-2 border-foreground/20 bg-[#e8dbbc]/50 p-3.5 retro-shadow-sm sm:flex-row sm:p-4"
+                        className="mt-8 flex flex-col items-center justify-center gap-4 border-2 border-foreground/20 bg-[#e8dbbc]/50 p-3.5 retro-shadow-sm sm:flex-row sm:p-4"
                       >
-                        {/* Page indicator info */}
-                        <div className="flex items-center gap-2 font-mono text-xs font-bold text-foreground">
-                          <span className="inline-block h-2 w-2 bg-red-700 animate-pulse" />
-                          <span>
-                            SHOWING {String(startIndex + 1).padStart(2, "0")}–{String(endIndex).padStart(2, "0")} OF {String(filteredEvents.length).padStart(2, "0")} EVENTS
-                          </span>
-                          <span className="hidden text-muted-foreground md:inline">|</span>
-                          <span className="hidden text-red-700 md:inline">
-                            PAGE [{String(currentPage).padStart(2, "0")}/{String(totalPages).padStart(2, "0")}]
-                          </span>
-                        </div>
 
                         {/* Navigation controls */}
                         <div className="flex flex-wrap items-center justify-center gap-1.5 font-mono">
@@ -901,13 +890,15 @@ export default function Page() {
               <div className="mb-3 flex items-center justify-center gap-2 font-mono text-xs text-muted-foreground">
                 <span>Engineered with passion by</span>
                 <span className="inline-flex items-center gap-1.5 font-bold text-foreground">
-                  <span className="relative inline-block h-4 w-4 overflow-hidden rounded-full">
-                    <Image
-                      src="/clubs/club-gdgc2.png"
-                      alt="GDGC"
-                      fill
-                      className="scale-[1.6] object-contain"
-                    />
+                  <span className="relative flex h-6 w-6 overflow-hidden rounded-full border-2 border-foreground bg-white p-0.5 shadow-sm">
+                    <span className="relative h-full w-full">
+                      <Image
+                        src="/club-gdgc2.png"
+                        alt="GDGC"
+                        fill
+                        className="scale-[5] object-contain"
+                      />
+                    </span>
                   </span>
                   Google Developer Groups on Campus
                 </span>
