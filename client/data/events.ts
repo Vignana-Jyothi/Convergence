@@ -276,6 +276,13 @@ export const EVENTS: Event[] = [
 		regLink: "https://unstop.com/o/XkUBE4i?lb=SI2ZYLII&utm_medium=Share&utm_source=asri9484&utm_campaign=Competitions",
 	},
 	{
+		id: "project-contest",
+		name: "Project Contest",
+		category: "Technical",
+		posterUrl: "/events/Project Contest - AKSHAYA SRIJA RUDRABHATLA.png",
+		regLink: "https://unstop.com/o/XkUBE4i?lb=SI2ZYLII&utm_medium=Share&utm_source=asri9484&utm_campaign=Competitions",
+	},
+	{
 		id: "rc-maze",
 		name: "RC Maze",
 		category: "Technical",
@@ -503,6 +510,34 @@ export const EVENTS: Event[] = [
 		category: "Social",
 		type: "custom",
 		subItems: ["Monster"],
+	},
+	{
+		id: "speak-to-lead",
+		name: "Speak to Lead",
+		category: "Cultural",
+		posterUrl: "/events/speak to lead.jpeg",
+		regLink: "https://docs.google.com/forms/d/e/1FAIpQLSeh0L1z8AON91l2gtqYO4taV2pZfQVeo4Fcr7ZtE1UEHXKRqg/viewform?pli=1",
+	},
+	{
+		id: "venture-conclave",
+		name: "Venture Conclave",
+		category: "Technical",
+		posterUrl: "/events/venture conclave.png",
+		regLink: "https://aspireup.ai/organization/vj-startups/event/100188",
+	},
+	{
+		id: "project-k",
+		name: "Project K",
+		category: "Cultural",
+		posterUrl: "/events/project-4.png",
+		regLink: "https://aspireup.ai/organization/yuwazen/event/100175",
+	},
+	{
+		id: "warzone-4.0",
+		name: "Warzone 4.0",
+		category: "Technical",
+		posterUrl: "/events/Warzone 4.0.png",
+		regLink: "https://aspireup.ai/organization/vj-garuda-vigilance/event/100158",
 	},
 ]
 
