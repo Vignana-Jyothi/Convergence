@@ -2,8 +2,10 @@ export type Event = {
 	id: string
 	name: string
 	category: string
-	posterUrl: string
-	regLink: string
+	type?: "standard" | "custom"
+	posterUrl?: string
+	regLink?: string
+	subItems?: string[]
 }
 
 export const EVENTS: Event[] = [
@@ -482,6 +484,25 @@ export const EVENTS: Event[] = [
 		category: "Technical",
 		posterUrl: "/events/wing builders.jpeg",
 		regLink: "https://aspireup.ai/organization/asme-vnrvjiet/event/100166",
+	},
+	{
+		id: "nss",
+		name: "NSS",
+		category: "Social",
+		type: "custom",
+		subItems: [
+			"NSS Gallery",
+			"NSS - Will you be my teacher",
+			"NSS - Parsheelan",
+			"NSS - Avishkar",
+		],
+	},
+	{
+		id: "monster",
+		name: "Monster",
+		category: "Social",
+		type: "custom",
+		subItems: ["Monster"],
 	},
 ]
 
