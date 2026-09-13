@@ -66,7 +66,6 @@ const FACULTY_COORDINATORS = [
 ]
 
 const EVENT_COORDINATORS = [
-  { name: "Srikar Burgula", role: ["Events Coordinator"], phone: "+91 8328292124", photoUrl: "/coordinators/srikar.jpeg" },
   { name: "P Maheshwar", role: ["Web & IT Coordinator"], phone: "+91 9515871625", photoUrl: "/coordinators/mahesh.jpeg" },
   { name: "E. V. Gaurav", role: ["Registrations & Help Desk Coordinator"], phone: "+91 8179590621", photoUrl: "/coordinators/gaurav.jpeg" },
   { name: "Sarvani Divakarla", role: ["Web & IT Coordinator"], phone: "+91 6302944144", photoUrl: "/coordinators/sarvani%20divakarla.jpeg" },
@@ -1068,7 +1067,7 @@ export default function Page() {
         >
           <div className="relative h-[160px] w-[160px] overflow-hidden">
             <Image
-              src="/clubs/club-gdgc2.png"
+              src="/club-gdgc2.png"
               alt="GDGC logo"
               fill
               sizes="128px"
