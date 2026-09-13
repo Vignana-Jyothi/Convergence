@@ -231,13 +231,13 @@ export const EVENTS: Event[] = [
 		posterUrl: "/events/DIY GARAGE (SAE) - PATANCHERU HARSHIT KUMAR.png",
 		regLink: "https://aspireup.ai/organization/sae-vnrvjiet/event/100154",
 	},
-	// {
-	// 	id: "diksuchi-2k26",
-	// 	name: "Diksuchi 2k26",
-	// 	category: "Technical",
-	// 	posterUrl: "/events/Diksuchi 2k26 - PACHIPALA LOHITH.PNG",
-	// 	regLink: "",
-	// },
+	{
+		id: "diksuchi-2k26",
+		name: "Diksuchi 2k26",
+		category: "Social",
+		posterUrl: "/events/Diksuchi 2k26 - PACHIPALA LOHITH.PNG",
+		regLink: "SPOT",
+	},
 	{
 		id: "embedded-workshop",
 		name: "Embedded Workshop",
@@ -245,20 +245,20 @@ export const EVENTS: Event[] = [
 		posterUrl: "/events/Embedded_Workshop - KASARLA MANVANTH.png",
 		regLink: "https://aspireup.ai/organization/https-edu-ieee-org-in-vnrvjiet/event/100172",
 	},
-	// {
-	// 	id: "galam",
-	// 	name: "Galam",
-	// 	category: "Cultural",
-	// 	posterUrl: "/events/Galam - Manaswini Gattu_page-0001.jpg",
-	// 	regLink: "",
-	// },
-	// {
-	// 	id: "jagruthi",
-	// 	name: "Jagruthi",
-	// 	category: "Cultural",
-	// 	posterUrl: "/events/Jagruthi - PACHIPALA LOHITH.png",
-	// 	regLink: "",
-	// },
+	{
+		id: "galam",
+		name: "Galam",
+		category: "Cultural",
+		posterUrl: "/events/Galam - Manaswini Gattu_page-0001.jpg",
+		regLink: "https://aspireup.ai/organization/vj-sahitivanam/event/100183",
+	},
+	{
+		id: "jagruthi",
+		name: "Jagruthi",
+		category: "Social",
+		posterUrl: "/events/Jagruthi - PACHIPALA LOHITH.png",
+		regLink: "SPOT",
+	},
 	{
 		id: "metapool",
 		name: "Metapool",
@@ -308,13 +308,13 @@ export const EVENTS: Event[] = [
 		posterUrl: "/events/cheppukondi-chuddam.jpg",
 		regLink: "https://aspireup.ai/organization/vj-sahitivanam/event/100179",
 	},
-	// {
-	// 	id: "college-quest",
-	// 	name: "College Quest",
-	// 	category: "Technical",
-	// 	posterUrl: "/events/college quest - PACHIPALA LOHITH.png",
-	// 	regLink: "",
-	// },
+	{
+		id: "college-quest",
+		name: "College Quest",
+		category: "Social",
+		posterUrl: "/events/college quest - PACHIPALA LOHITH.png",
+		regLink: "SPOT",
+	},
 	{
 		id: "convergence-coding-contest",
 		name: "Convergence Coding Contest",
@@ -343,13 +343,13 @@ export const EVENTS: Event[] = [
 		posterUrl: "/events/matlab casino.png",
 		regLink: "https://aspireup.ai/organization/mathletes-vnrvjiet/event/100189", // handpicked
 	},
-	// {
-	// 	id: "paper-presentation",
-	// 	name: "Paper Presentation",
-	// 	category: "Technical",
-	// 	posterUrl: "/events/paper presentation.png",
-	// 	regLink: "",
-	// },
+	{
+		id: "paper-presentation",
+		name: "Paper Presentation",
+		category: "Technical",
+		posterUrl: "/events/paper presentation.png",
+		regLink: "https://unstop.com/p/paper-presentation-ieee-vnrvjiet-1752009",
+	},
 	{
 		id: "profolio",
 		name: "Profolio",
@@ -371,13 +371,13 @@ export const EVENTS: Event[] = [
 		posterUrl: "/events/rrr-lakshyam.jpg",
 		regLink: "https://aspireup.ai/organization/vj-sahitivanam/event/100181",
 	},
-	// {
-	// 	id: "sparsha",
-	// 	name: "Sparsha",
-	// 	category: "Cultural",
-	// 	posterUrl: "/events/sparsha (1) - PACHIPALA LOHITH.png",
-	// 	regLink: "",
-	// },
+	{
+		id: "sparsha",
+		name: "Sparsha",
+		category: "Social",
+		posterUrl: "/events/sparsha (1) - PACHIPALA LOHITH.png",
+		regLink: "SPOT",
+	},
 	// {
 	// 	id: "telugu-taavi",
 	// 	name: "Telugu Taavi",
@@ -454,6 +454,34 @@ export const EVENTS: Event[] = [
 		category: "Technical",
 		posterUrl: "/events/Warzone 4.0.png",
 		regLink: "https://aspireup.ai/organization/vj-garuda-vigilance/event/100158",
+	},
+	{
+		id: "gears-and-greases",
+		name: "Gears and Greases",
+		category: "Technical",
+		posterUrl: "/events/gears-and-greases.jpeg",
+		regLink: "https://aspireup.ai/organization/asme-vnrvjiet/event/100165",
+	},
+	{
+		id: "m-cadathon",
+		name: "M-Cadathon",
+		category: "Technical",
+		posterUrl: "/events/m-cadathon.jpeg",
+		regLink: "https://aspireup.ai/organization/asme-vnrvjiet/event/100164",
+	},
+	{
+		id: "saaradhi",
+		name: "Saaradhi",
+		category: "Social",
+		posterUrl: "/events/saradhi.png",
+		regLink: "SPOT",
+	},
+	{
+		id: "wing-builders",
+		name: "Wing Builders",
+		category: "Technical",
+		posterUrl: "/events/wing builders.jpeg",
+		regLink: "https://aspireup.ai/organization/asme-vnrvjiet/event/100166",
 	},
 ]
 
