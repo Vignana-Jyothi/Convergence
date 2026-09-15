@@ -58,6 +58,7 @@ const THEME_ITEMS = [
 ]
 
 const FACULTY_COORDINATORS = [
+  { name: "Dr T Srinivasa Rao", role: ["Dean-Student Progression"], photoUrl: "/coordinators/dean.png" },
   { name: "Dr. D. Srinivasa Rao", role: ["Sponsorship & Finance", "Web & IT", "Hospitality & Guest Relations"], phone: "+91 9966232722", photoUrl: "/coordinators/srinivasa%20rao.jpeg" },
   { name: "Dr. Y. Chalapathi Rao", role: ["Event Management & Coordination", "Registration & Help Desk"], phone: "+91 9491127967", photoUrl: "/coordinators/chalapatirao.jpeg" },
   { name: "Mrs. E. Lalitha", role: ["PR & Outreach", "Social Media & Content", "Photography & Videography"], phone: "+91 9014355042", photoUrl: "/coordinators/lalitha.jpeg" },
