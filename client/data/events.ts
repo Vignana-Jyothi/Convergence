@@ -97,7 +97,7 @@ export const EVENTS: Event[] = [
 		id: "ml-arena",
 		name: "ML Arena",
 		category: "Technical",
-		posterUrl: "/events/CSI_ML Arena_Convergence 2k26 - TAWFEEQ OMAR MOHAMMED.png",
+		posterUrl: "/events/ml_arena.png",
 		regLink: "https://aspireup.ai/organization/csi-sbc-vnrvjiet/event/100148",
 	},
 	{
