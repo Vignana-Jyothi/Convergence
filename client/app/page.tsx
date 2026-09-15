@@ -180,7 +180,7 @@ function ContactCard({
 }: {
   name: string
   role?: string[]
-  phone: string
+  phone?: string
   photoUrl?: string
   isFaculty?: boolean
   isDeveloper?: boolean
